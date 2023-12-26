@@ -1,0 +1,49 @@
+{{$mainURL := (replace .RelPermalink "/cards/" "/")}}
+{{$versioned := false}}
+{{$versions := ""}}
+{{ $openedVersion := "" }}
+{{$archivePathIndex := 4}}
+
+{{if (ne .Site.Language.Lang "en")}}
+    {{$archivePathIndex = 5}}
+{{end}}
+
+{{$engine := (index (split .File.Dir "/")  1)}}
+{{$archivePath := (print .Section "/" $engine "/_archive")}}
+
+{{if os.FileExists $archivePath}}
+    {{$versioned = true}}
+    {{$versions =  (sort ((.GetPage $archivePath).Pages) ".File.Dir" "desc")}}
+{{end}}
+
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+
+{{ if $versioned }}
+    {{if in $mainURL "_archive"}}
+        {{ $openedVersion = index (split .RelPermalink "/") $archivePathIndex }}
+    {{end}}
+    <div class="dropdown versionDropdown">
+        <button class="btn dropdown-toggle versionDropdown__button" type="button" id="dropdownMenuButton2"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{if eq $openedVersion ""}}
+                {{ T "sdk_version_selector_latest" | safeHTML}}
+            {{else}}
+                {{$openedVersion}}
+            {{end}}
+        </button>
+        <div class="dropdown-menu versionDropdown__menu" aria-labelledby="dropdownMenuButton">
+            <a class="versionDropdown__link {{if eq $openedVersion ""}} versionDropdown__link_is-active {{end}}"
+               href="{{ (print "sdk/" $engine) | relLangURL }}" data-version="latest"
+               data-text="latest">{{ T "sdk_version_selector_latest" | safeHTML}}</a>
+            {{ range $index, $version := $versions }}
+                {{ $ver:=(index (split .File.Dir "/") 3) }}
+                {{ $engine:=(index (split .File.Dir "/") 1) }}
+                <a class="versionDropdown__link {{ if eq $ver $openedVersion }} versionDropdown__link_is-active {{end}}"
+                   href="{{ (print "sdk/" $engine "/_archive/" $ver) | relLangURL }}" data-version="{{$ver}}"
+                   data-text="{{$ver}}">{{$ver}}</a>
+            {{ end }}
+        </div>
+    </div>
+{{end}}

@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /cards/
+Disallow: /sdk/ios/use-xsolla-servers/
+Disallow: /sdk/android/use-serverless-integration/
+Disallow: /sdk/unity/use-serverless-integration/
+Disallow: /api/deprecated/
+Disallow: /doc/checkout-guide/
+
+User-agent: Yandex
+Disallow: /doc/pay-station/features/checkout/
+
+# Algolia-Crawler-Verif: 0DBFDAB5B109C380

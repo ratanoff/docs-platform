@@ -1,0 +1,146 @@
+{{ $service:= .File.BaseFileName }}
+{{ $defaultApiVersion:= "v2" }}
+{{ $pages:= (index (index $.Site.Taxonomies $service) $defaultApiVersion) }}
+
+<main class="main content main-content all-site-wrap oldLayout">
+  <nav class="content-wrapper-guide menu-guide bs-docs-sidebar" id="guide-menu">
+    <div class="pf-x sidebar__inner">
+      <div class="menu-guide-content navbar-e">
+        <div class="back-button">
+          <a href="{{ "#api" | relLangURL }}" class="c-icon arrow-alt-left">&nbsp;{{ T "menu_back_to_apis" | safeHTML}}</a>
+        </div>
+        <div class="menu-header"><a href="#{{ .Title }}" class="c-menu-i">{{ T .Title }}</a></div>
+        <div class="menu-header">
+            {{ if in (index .Params $service) $defaultApiVersion  }}
+          <a href="#{{ .Title | urlize }}">{{ .Title | T }}</a>
+            {{ end }}
+        </div>
+        <ul class="nav nav-stacked fixed ff-s">
+        {{ range $pages }}
+            {{ if eq .Kind "section" }}
+                <li class="nav-item">
+                  <a href="#{{ .Title | urlize }}" class="nav-link">{{ .Title | T }}</a>
+                  <ul class="nav nav-stacked">
+                  {{ range .Pages }}
+                      {{ if in (index .Params $service) $defaultApiVersion  }}
+                        <li class="nav-item">
+                          <a href="#{{ .Title | urlize }}" class="nav-link sub-link">{{ .Title | T }}</a>
+                        </li>
+                      {{ end }}
+                  {{ end }}
+                  </ul>
+                </li>
+            {{ end }}
+        {{ end }}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="page-wrap content-guide content section-description">
+    <article>
+        <div class="itv-title">
+          <h1 id="{{ .Title }}">{{ T .Title }}</h1>
+        </div>
+      <div class="article-content">
+
+{{ range $pages }}
+    {{ if eq .Kind "section" }}
+        <h2 id="{{ .Title | urlize }}">{{ .Title | T }}</h2>
+        {{ if gt (len .Content) 0 }}
+            <p>{{ .Content | markdownify }}</p>
+        {{ end }}
+        {{ range .Pages }}
+            {{ if in (index .Params $service) $defaultApiVersion }}
+            <h3 id="{{ .Title | urlize }}">{{ .Title | T }}</h3>
+            {{ (replace .Content "{version}" $defaultApiVersion) | markdownify }}
+
+
+
+{{/* блок форматирования кода*/}}
+{{ $codeFile := ( replace .File.Path "api_content" "code/api") }}
+{{ if fileExists $codeFile }}
+    {{ $fileContents := split (readFile $codeFile) "****" }}
+    {{ $code1 := (( replace (index $fileContents 0) "{version}" $defaultApiVersion ) | markdownify ) }}
+    {{ $code2 := (( replace (index $fileContents 1) "{version}" $defaultApiVersion ) | markdownify ) }}
+
+    {{ $langs := (findRE "```[ a-z]+" (index $fileContents 0) ) }}
+
+<div class="codeTabs codeTabs_btShadow list">
+        <div class="iconCodeControl">
+            <div class="iconCodeControl__icon iconCodeControl__clipboardButton iconCodeControl__copyButton">
+                <div class="codeblockTooltip codeblockTooltip_copy"><small>Copy</small></div>
+            </div>
+            <div class="iconCodeControl__icon iconCodeControl__fullSbutton">
+                <div class="codeblockTooltip codeblockTooltip_full"><small>Full screen</small></div>
+                <div class="codeblockTooltip codeblockTooltip_small"><small>Small screen</small></div>
+            </div>
+        </div>
+
+          <div class="codeMenu__mobile">
+              <div class="langTitle">
+                  {{ range $index, $element := $langs }}
+                      {{ $lang := (replace (replace $element "`" "") " " "" )  }}
+                      {{ $langView :=(replace $lang "shell" "curl" ) }}
+                      {{ $langView :=(replace $langView "csharp" "C#" ) }}
+                    {{ if eq $index 0 }}<span class="langTitle__text">{{ $langView }}</span>{{ end }}
+                    {{ if eq $index 1 }}<span class="caret"></span>{{ end }}
+                  {{ end }}
+              </div>
+          </div>
+
+    <ul class="codeTabs__nav">
+        {{ range $index, $element := $langs }}
+            {{ $lang := (replace (replace $element "`" "") " " "" )  }}
+            {{ $langView :=(replace $lang "shell" "curl" ) }}
+            {{ $langView :=(replace $langView "csharp" "C#" ) }}
+            <li class="codeTabs__tab {{ if eq $index 0 }}is-active{{ end }}" data-code-lang="{{ $lang }}">
+                <div class="codeTabs__tabName">{{ $langView }}</div>
+                <div class="codeTabs__tabBullet"></div>
+            </li>
+        {{ end }}
+    </ul>
+
+    <div class="codeTabs__content">
+                    {{ with .Params.request_title }}
+                        <div class="codeTitleName heading__label">{{ T . | safeHTML}}</div>
+                    {{ end }}
+
+                    {{/* подстановка is-active для первого элемента*/}}
+                    <div class="highlight is-active">
+                    {{  (strings.TrimPrefix "<div class=\"highlight\">" $code1 ) | safeHTML }}
+
+                    {{ with .Params.response_title }}
+                        <div class="codeTitleName heading__label">{{ T . | safeHTML}}</div>
+                    {{ end }}
+
+                    {{ if gt ( len $code2) 0 }}
+                        <div class="highlight is-active">
+                        {{  (strings.TrimPrefix "<div class=\"highlight\">" $code2 ) | safeHTML }}
+                    {{ end }}
+              </div>
+            </div>
+{{ end }}
+
+
+
+
+
+
+
+
+
+            {{ end }}
+        {{ end }}
+        {{ end }}
+    {{ end }}
+    {{ partial "features/feedback.html" . }}
+    {{ partial "features/feedback-rating.html" }}
+    {{ partial "features/lastMod.html" . }}
+    {{ partial "features/contextReportInfo.html" }}
+    </div>
+
+  </article>
+  </div>
+</main>

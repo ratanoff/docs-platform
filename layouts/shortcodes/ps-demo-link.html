@@ -1,0 +1,10 @@
+{{ $buttonText := .Get 0 }}
+{{ $lang := .Site.Language.Lang }}
+
+{{ if eq "zh" $lang }}
+    {{ .Scratch.Set "url" "https://livedemo.xsolla.com/cn-pay-station" }}
+{{ else }}
+    {{ .Scratch.Set "url" "https://livedemo.xsolla.com/pay-station" }}
+{{ end }}
+
+<a class="button button_primary" href='{{ .Scratch.Get "url" }}' target="_blank">{{ T $buttonText | safeHTML}}</a>

@@ -1,0 +1,57 @@
+<main class="main">
+  <div class="content-guide content section-description">
+    <div class="article-content article-content__searchPage">
+      <h1 id="search_results">{{ T "search_page_title" }}</h1>
+
+      <div class="searchContent">
+        <div class="searchContent__results">
+          <div class="searchContent__inputContainer">
+            <svg class="searchIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%" id="Layer_1" style="enable-background:new 0 0 128 128;" version="1.1" viewBox="0 0 128 128" width="100%" xml:space="preserve"><g><line style="fill:none;stroke:#011627;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="92.173" x2="113.761" y1="92.173" y2="113.761"/><circle cx="59.892" cy="59.892" r="45.652" style="fill:none;stroke:#011627;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;"/></g></svg>
+            <input type="text" class="searchContent__input" placeholder='{{ T "search_input_placeholder" }}'>
+            <svg class="searchCross" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357;" xml:space="preserve"><g><g><polygon points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3     214.2,178.5   " fill="#011627"></polygon></g></g></svg>
+          </div>
+
+          <div class="searchContent__datasource hidden">
+            <div class="searchContent__tags">
+              <button class="button_tag button_tag_active" tag="top_results">{{ T "search_tag_top_results" }}</button>
+              <button class="button_tag" tag="doc">{{ T "search_tag_guides" }}</button>
+              <button class="button_tag" tag="api">{{ T "search_tag_api" }}</button>
+              <button class="button_tag" tag="sdk">{{ T "search_tag_sdk" }}</button>
+              <button class="button_tag" tag="faq">{{ T "search_tag_faq" }}</button>
+              <!-- <button class="button_tag" tag="changelog">{{ T "search_tag_changelog" }}</button> -->
+            </div>
+            <div class="algolia-autocomplete">
+              <div class="ds-dataset-1">
+                <span class="ds-suggestions"></span>
+                <button class="button_secondary searchContent__showMore searchContent__showMore_hidden">{{ T "search_show_more" }}</button>
+              </div>
+              <div class="algolia-docsearch-footer">
+                Search by <a class="algolia-docsearch-footer--logo" href="https://www.algolia.com">Algolia</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="searchContent__support">
+          <div class="help-cards-wrapper">
+            <a class="card" href="{{ "doc/faq/" | relLangURL }}" data-id="support_faq">
+              <div class="help-card-icon faq"></div>
+              <div class="help-card-title notoSansExtra">{{ T "index_help_support_faq_title" | safeHTML }}</div>
+              <div class="help-card-text notoSansRegular">{{ T "index_help_support_faq_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="card" href="https://xsolla.com{{ relLangURL "partner-support"}}" target="_blank" data-id="partner_support">
+              <div class="help-card-icon support"></div>
+              <div class="help-card-title notoSansExtra">{{ T "index_help_support_support_feedback_title" | safeHTML }}</div>
+              <div class="help-card-text notoSansRegular">{{ T "index_help_support_support_feedback_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <div class="card">
+              <div class="help-card-icon integ_team"></div>
+              <div class="help-card-title notoSansExtra">{{ T "index_help_support_integration_team_title" | safeHTML }}</div>
+              <div class="help-card-text notoSansRegular">{{ T "index_help_support_integration_team_desc1" | markdownify }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

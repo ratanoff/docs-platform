@@ -1,0 +1,38 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+
+{{$currentPageTitle := .Title}}
+{{$parentTitle := .Parent.Title }}
+
+{{if in .File.Dir "_archive"}}
+    {{$archivePathIndex := 4}}
+    {{if (ne .Site.Language.Lang "en")}}
+        {{$archivePathIndex = 5}}
+    {{end}}
+    {{$openedVersion := index (split .RelPermalink "/") $archivePathIndex}}
+    {{$contentRootPage = .GetPage (print .Section "/" $contentRootDir "/_archive/" $openedVersion)}}
+{{end}}
+
+{{ range $contentRootPage.Pages }}
+    {{ if not .Params.exclude_from_main_menu }}
+        <p class="heading__label heading__label_withArrow _id_menuSubhead {{ with (eq .Title $parentTitle) }} _active {{ end }}">{{ T .Title | safeHTML }}</p>
+        {{if gt (len .Pages) 0}}
+            {{ $successList := .Params.success_indicator }}
+            {{ $sectionTitle := .Title }}
+            <ul class="list sideMenu__item sideMenu__list {{ with (eq .Title $parentTitle) }} _active {{ end }} {{ with $successList }} successList {{ end }}"
+                data-success-title="{{.Parent.Title}}_{{ $sectionTitle }}">
+                {{range .Pages}}
+                    {{if ne .Params.exclude_from_main_menu true}}
+                        <li class=" list__item {{ with (and (eq $sectionTitle $parentTitle) ( eq $currentPageTitle .Title )) }} _active {{ end }}">
+                            {{ if $successList}}<span class="successIndicator"
+                                                      data-success-value="{{.File.TranslationBaseName}}"></span>{{ end }}
+                            {{$link := (path.Dir .File.Dir) | relLangURL }}
+                            <a href="{{$link}}/{{.File.TranslationBaseName}}">{{ T .Title | safeHTML }}</a>
+                        </li>
+                    {{end}}
+                {{end}}
+            </ul>
+        {{end}}
+    {{end}}
+{{end}}

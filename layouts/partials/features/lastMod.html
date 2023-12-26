@@ -1,0 +1,35 @@
+{{ $date := .Lastmod.Format "2006-01-02" }}
+{{ $lang := .Site.Language.Lang }}
+{{ $AllMonthNames := .Site.Data.langs.dates }}
+{{ $langMonths := index $AllMonthNames $lang }}
+
+<div class="hrLine"></div>
+<small class="lastModDate">
+{{ T "page_last_update_info" }}:
+
+{{ if eq "en" $lang }}
+    {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }}, {{ dateFormat "2006" $date }}
+{{ end }}
+
+{{ if eq "de" $lang }}
+    {{ dateFormat "2" $date }}. {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2006" $date }}
+{{ end }}
+
+{{ if eq "ru" $lang }}
+    {{ $langMonths := index $AllMonthNames "ru-plural" }}
+    {{ dateFormat "2" $date }} {{ index $langMonths (dateFormat "01" $date ) }}  {{ dateFormat "2006" $date }}
+{{ end }}
+
+{{ if eq "zh" $lang }}
+    {{ dateFormat "2006" $date }}年{{ index $langMonths (dateFormat "01" $date ) }}{{ dateFormat "2" $date }}日
+{{ end }}
+
+{{ if eq "ja" $lang }}
+{{ dateFormat "2006" $date }}年{{ index $langMonths (dateFormat "01" $date ) }}{{ dateFormat "2" $date }}日
+{{ end }}
+
+{{ if eq "ko" $lang }}
+    {{ dateFormat "2006" $date }}년 {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }}일
+{{ end }}
+
+</small>

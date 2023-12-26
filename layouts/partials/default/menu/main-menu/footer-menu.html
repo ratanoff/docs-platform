@@ -1,0 +1,24 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+{{ $permalink := .Permalink | relLangURL }}
+
+{{if in .File.Dir "_archive"}}
+    {{$archivePathIndex := 4}}
+    {{if (ne .Site.Language.Lang "en")}}
+        {{$archivePathIndex = 5}}
+    {{end}}
+    {{$openedVersion := index (split .RelPermalink "/") $archivePathIndex}}
+    {{$contentRootPage = .GetPage (print .Section "/" $contentRootDir "/_archive/" $openedVersion)}}
+{{end}}
+
+{{if gt (len (where $contentRootPage.Pages "Params.add_to_footer_menu" true)) 0}}
+    <hr>
+    <ul class="list list__simpleMenu sideMenu__list _active">
+        {{range where $contentRootPage.Pages "Params.add_to_footer_menu" true}}
+            <li class="list__item {{if eq .RelPermalink $permalink}}_active{{end}}">
+                <a href="{{.Permalink | relLangURL}}">{{T .Title | markdownify }}</a>
+            </li>
+        {{end}}
+    </ul>
+{{end}}

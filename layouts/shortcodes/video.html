@@ -1,0 +1,1 @@
+<video autoplay muted loop playsinline {{ with .Get "width"}} width="{{.}}"{{ end }} {{ with .Get "class"}} class="{{.}}"{{ end }}><source src="{{ getenv "HUGO_CDN" }}/static/img/{{ (.Get "source") }}" type='video/mp4'/></video>

@@ -1,0 +1,73 @@
+<script>
+
+if (location.hostname !== 'localhost') {
+      function getCookieParams() {
+
+    var result = { expires: 0, path: '/' };
+
+if (location.hostname.indexOf('.xsolla.com') > -1) {
+  result =  { expires: 0, domain: '.xsolla.com', path: '/' };
+}
+
+if (location.hostname.indexOf('.srv.local') > -1) {
+  result =  { expires: 0, domain: '.srv.local', path: '/' };
+}
+
+
+    if(navigator.userAgent.indexOf('MSIE')!==-1
+               || navigator.appVersion.indexOf('Trident/') > 0){
+               /* Microsoft Internet Explorer detected in. */
+
+
+        result.expires = 60*24*30;
+     }
+
+     return result;
+}
+
+function setCookie(name, value) {
+var props = getCookieParams();
+var exp = props.expires;
+
+if (typeof exp == "number" && exp) {
+  var d = new Date();
+  d.setTime(d.getTime() + exp * 1000);
+  exp = props.expires = d;
+}
+
+if (exp && exp.toUTCString) {
+  props.expires = exp.toUTCString()
+}
+
+value = encodeURIComponent(value);
+var updatedCookie = name + "=" + value;
+
+for (var propName in props) {
+  updatedCookie += "; " + propName;
+  var propValue = props[propName];
+  if (propValue !== true) {
+    updatedCookie += "=" + propValue;
+  }
+}
+document.cookie = updatedCookie;
+}
+
+function getCookie(name) {
+var matches = document.cookie.match(new RegExp(
+  "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+))
+return matches ? decodeURIComponent(matches[1]) : undefined
+}
+
+var currentDate = new Date();
+currentDate.setFullYear(new Date().getFullYear() + 1);
+var yearSession = currentDate.toUTCString();
+setCookie('docs_visit', '1', {expires:yearSession});
+
+var docCookie = getCookie('first_visit');
+if (docCookie == null) {
+    setCookie('first_visit', 'developers', {expires:yearSession});
+};
+  }
+
+</script>

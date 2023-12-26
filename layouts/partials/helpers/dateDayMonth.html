@@ -1,0 +1,30 @@
+{{ $date := (.Get "Date" )}}
+{{ $lang := (.Get "Lang" )}}
+{{ $AllMonthNames := (.Get "AllMonthNames" )}}
+{{ $langMonths := index $AllMonthNames $lang }}
+
+{{ if eq "en" $lang }}
+    {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }} 
+{{ end }}
+
+{{ if eq "de" $lang }}
+    {{ dateFormat "2" $date }}. {{ index $langMonths (dateFormat "01" $date ) }}  
+{{ end }}
+
+{{ if eq "ru" $lang }}
+    {{ $langMonths := index $AllMonthNames "ru-plural" }}
+    {{ dateFormat "2" $date }} {{ index $langMonths (dateFormat "01" $date ) }}  
+{{ end }}
+
+
+{{ if eq "zh" $lang }}
+    {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }}日
+{{ end }}
+
+{{ if eq "ja" $lang }}
+    {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }}日
+{{ end }}
+
+{{ if eq "ko" $lang }}
+    {{ index $langMonths (dateFormat "01" $date ) }} {{ dateFormat "2" $date }}일
+{{ end }}

@@ -1,0 +1,465 @@
+<header class="header" id="header">
+  <a href="{{ "" | relLangURL }}" class="header__logo logo">
+  <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 100 100" class="logo__image">
+    <g fill="none" fill-rule="evenodd">
+      <path fill="#0076FF" d="M0 0h100v100H0z"></path>
+      <path fill="#FFF" d="M75.24 63.393c-4.067 0-7.383-3.29-7.383-7.364 0-4.076 3.316-7.368 7.383-7.368 4.036 0 7.35 3.292 7.35 7.368 0 4.074-3.314 7.364-7.35 7.364m-.002-10.714c1.838 0 3.333 1.523 3.333 3.362a3.338 3.338 0 0 1-3.333 3.334c-1.87 0-3.363-1.497-3.363-3.334a3.366 3.366 0 0 1 3.363-3.362zM45.089 82.143V68.75h4.018v13.393H45.09zm5.357 0V68.75h4.018v13.393h-4.018zm15.666-57.95l4.424 4.733-5.894 6.342-2.46-2.675 3.396-3.656-4.417-4.739.005-.006-.005-.009 2.486-2.648.005.01 3.401-3.688 2.485 2.646-3.426 3.69zM25.013 48.66l8.023 13.393H16.964l8.05-13.393zm.23 7.589l-2.029 2.679h4.018l-1.99-2.679zM42.41 21.915l-4.658 4.632 4.658 4.662-2.698 2.72-4.67-4.663-4.668 4.663-2.696-2.72 4.671-4.662-4.671-4.632 2.696-2.719 4.668 4.66 4.67-4.66 2.698 2.72z"></path>
+    </g>
+  </svg>
+  <img src="{{ getenv "HUGO_CDN" }}/images/general/Developer.svg" class="logo__text" alt="Developer">
+  </a>
+  <div class="header__controls">
+    <div class="search">
+      <div class="search__preview _toggle-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="search__icon"><g fill="none" stroke="#fff" stroke-width="12" stroke-linecap="square" stroke-miterlimit="10"><path d="M92.173 92.173l21.588 21.588"/><circle cx="59.892" cy="59.892" r="45.652"/></g></svg>
+        <div class="search__text">{{ T "header_search" | safeHTML }}</div>
+      </div>
+      <div class="search__wrapper">
+        <div class="search__icon search__icon_search">
+          <svg width="16" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" fill="#011627" clip-rule="evenodd" d="M6 12C2.68629 12 0 9.31371 0 6C0 2.68629 2.68629 0 6 0C9.31371 0 12 2.68629 12 6C12 7.29583 11.5892 8.49572 10.8907 9.47653L14.9667 13.5525C15.3572 13.943 15.3572 14.5762 14.9667 14.9667C14.5762 15.3572 13.943 15.3572 13.5525 14.9667L9.47653 10.8907C8.49572 11.5892 7.29583 12 6 12ZM6 10.6C8.54051 10.6 10.6 8.54051 10.6 6C10.6 3.45949 8.54051 1.4 6 1.4C3.45949 1.4 1.4 3.45949 1.4 6C1.4 8.54051 3.45949 10.6 6 10.6Z" fill="#00244D"/></svg>
+        </div>
+        <input class="search__input" id="docsearch" placeholder="{{ T "header_search" | safeHTML}}">
+        <button class="search__icon search__icon_close _toggle-search">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357;" xml:space="preserve"><g><g><polygon points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3     214.2,178.5   " fill="#011627"/></g></g></svg>
+        </button>
+      </div>
+    </div>
+    <div class="dropdownMenu" id="dropdownMobileMenu">
+      <ul class="dropdownMenu__links doc_main_navigation-click">
+        <li>
+          <a class="link link_white" data-id="solutions" href="{{ "#solutions" | relLangURL }}">{{ T "index_menu_solutions" | safeHTML}}</a>
+        </li>
+        <li>
+          <a class="link link_white" data-id="products" href="{{ "#doc" | relLangURL }}">{{ T "index_menu_product_guides" | safeHTML}}</a>
+        </li>
+        <li>
+          <a class="link link_white" data-id="API" href="{{ "#api" | relLangURL }}">{{ T "index_menu_api_references" | safeHTML}}</a>
+        </li>
+        <li>
+          <a class="link link_white" data-id="SDK" href="{{ "#sdk" | relLangURL }}">{{ T "index_menu_sdks_libraries" | safeHTML}}</a>
+        </li>
+        <li>
+          <a class="link link_white" data-id="help" href="{{ "#help" | relLangURL }}">{{ T "index_menu_help_support" | safeHTML}}</a>
+        </li>
+      </ul>
+      <div class="dropdownMenu__buttons">
+        <a class="button button_primary dropdownMenu__control" target="_blank" href='https://publisher.xsolla.com?locale={{ $.Site.Language.Lang }}' id="signUpButton"><span>{{ T "header_sign_in" | safeHTML}}</span></a>
+        <div class="dropdown dropdownMenu__control">
+          <button class="button button_secondaryWhite button_withTriangle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ $.Site.Language.Lang | upper }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-right langSwitcher" aria-labelledby="dropdownMenuButton">
+            {{- $currSitePrefix := "" | relLangURL | strings.TrimSuffix "/" }}
+            {{- $noLangPath := $.RelPermalink | strings.TrimPrefix $currSitePrefix }}
+            {{- $langPath := $noLangPath}}
+            {{- range $.Site.Data.langs.langs -}}
+            {{ if ne .iso "en" -}}
+            {{ $langPath =  (printf "/%s%s" .iso $noLangPath) }}
+            {{- end -}}
+            <a class="langSwitcher__link{{ if eq $.Lang .iso }} _is-active {{ end }}"  href="{{ $langPath }}" lang="{{ .iso }}">{{ .lang }}</a>
+            {{- end}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hamburgerMenu">
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_1"></div>
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_2"></div>
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_3"></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <section class="sticky-menu">
+    <div class="menu-title">
+      <div class="menu-title-text notoSansExtra">{{ T "index_menu_guides_resources" | safeHTML }}</div>
+      <div class="line"></div>
+    </div>
+    <ul class="menu-list doc_main_navigation-click">
+      <li class="menu-list-item">
+        <a href="#solutions" data-id="solutions" class="menu-list-item-link active">
+          {{ T "index_menu_solutions" | safeHTML }}
+          <div class="blue-box"></div>
+        </a>
+      </li>
+      <li class="menu-list-item">
+        <a href="#doc" data-id="products" class="menu-list-item-link">
+          {{ T "index_menu_product_guides" | safeHTML }}
+          <div class="blue-box"></div>
+        </a>
+      </li>
+      <li class="menu-list-item">
+        <a href="#api" data-id="API" class="menu-list-item-link">
+          {{ T "index_menu_api_references" | safeHTML }}
+          <div class="blue-box"></div>
+        </a>
+      </li>
+      <li class="menu-list-item">
+        <a href="#sdk" data-id="SDK" class="menu-list-item-link">
+          {{ T "index_menu_sdks_libraries" | safeHTML }}
+          <div class="blue-box"></div>
+        </a>
+      </li>
+      <li class="menu-list-item">
+        <a href="#help" data-id="help" class="menu-list-item-link">
+          {{ T "index_menu_help_support" | safeHTML }}
+          <div class="blue-box"></div>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="xsolla-product-block solutions" id="solutions">
+    <div class="xsolla-product-block-wrapper">
+      <div class="solutions-label">{{ T "index_solutions_label" | safeHTML}}</div>
+      <h2 class="xsolla-product-title notoSansExtra">{{ T "index_solutions_title" | markdownify }}</h2>
+      <div class="xsolla-product-description notoSansRegular">{{ T "index_solutions_description" | safeHTML}}</div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <a class="solutions-card" href="{{ "solutions/web-shop/" | relLangURL }}">
+          <div class="solutions-card__title notoSansExtra">{{ T "index_solutions_webshop_header" | safeHTML}}</div>
+          <div class="solutions-card__subtitle">{{ T "index_solutions_webshop"}}</div>
+          <div class="solutions-card__description">{{ T "index_solutions_webshop_description"  | safeHTML}}</div>
+          <div class="solutions-card__link">
+            <p class="solutions-learn-more-link" data-id="doc_main_solutions_web-shop-cta-click">
+              {{ T "index_solutions_see_guide" | safeHTML}} <span class="arrow-bl-gst-bbl">→</span>
+            </p>
+          </div>
+          </a>
+        </div>
+
+        <div class="col-lg-6">
+          <a class="solutions-card" href="{{ "solutions/payments/" | relLangURL }}">
+          <div class="solutions-card__title notoSansExtra">{{ T "index_solutions_payments_header" | safeHTML}}</div>
+          <div class="solutions-card__subtitle">{{ T "index_solutions_payments"}}</div>
+          <div class="solutions-card__description">{{ T "index_solutions_payments_description"  | safeHTML}}</div>
+          <div class="solutions-card__link">
+            <p class="solutions-learn-more-link" data-id="doc_main_solutions_game-sales-cta-click">
+              {{ T "index_solutions_see_guide" | safeHTML}} <span class="arrow-bl-gst-bbl">→</span>
+            </p>
+          </div>
+          </a>
+        </div>
+
+        <div class="col-lg-6">
+          <a class="solutions-card" href="{{ "solutions/ddh/" | relLangURL }}">
+          <div class="solutions-card__title notoSansExtra">{{ T "index_solutions_ddh_header" | safeHTML}}</div>
+          <div class="solutions-card__subtitle">{{ T "index_solutions_ddh"}}</div>
+          <div class="solutions-card__description">{{ T "index_solutions_ddh_description"  | safeHTML}}</div>
+          <div class="solutions-card__link">
+            <p class="solutions-learn-more-link" data-id="doc_main_solutions_ddh-cta-click">
+              {{ T "index_solutions_see_guide" | safeHTML}} <span class="arrow-bl-gst-bbl">→</span>
+            </p>
+          </div>
+          </a>
+        </div>
+
+        <div class="col-lg-6">
+          <a class="solutions-card" href="{{ "solutions/presales/" | relLangURL }}">
+          <div class="solutions-card__title notoSansExtra">{{ T "index_solutions_pre_orders_header" | safeHTML}}</div>
+          <div class="solutions-card__subtitle">{{ T "index_solutions_pre_orders"}}</div>
+          <div class="solutions-card__description">{{ T "index_solutions_pre_orders_description"  | safeHTML}}</div>
+          <div class="solutions-card__link">
+            <p class="solutions-learn-more-link" data-id="doc_main_solutions_game-sales-cta-click">
+              {{ T "index_solutions_see_guide" | safeHTML}} <span class="arrow-bl-gst-bbl">→</span>
+            </p>
+          </div>
+          </a>
+        </div>
+      </div>
+  </section>
+
+  <section class="xsolla-product-block get-started" id="doc">
+    <div class="xsolla-product-block-wrapper">
+      <h2 class="xsolla-product-title notoSansExtra">{{ T "index_product_guides_title" | markdownify }}</h2>
+      <div class="flex-colums-wrapper">
+
+        <div class="column">
+          <div class="column-block">
+            <div class="column-block-title">{{ T "index_product_guides_operate_globally" | safeHTML }}</div>
+            <div class="items-wrapper">
+              <a class="column-block-card" href="{{ "doc/pay-station/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/ps-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "pay_station_guide" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_pay_station_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/payouts/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/payouts-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "payouts_guide" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_payouts_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="column-block">
+            <div class="column-block-title">{{ T "index_product_guides_earn_more_revenue" | safeHTML }}</div>
+            <div class="items-wrapper">
+              <a class="column-block-card" href="{{ "doc/in-game-store/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/igs-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "guides_in_game_store" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_igs_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/subscriptions/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/sub-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "guides_subscriptions" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_subscriptions_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/buy-button/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/bb-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "guides_buy_button" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_buy_button_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/site-builder/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/sb-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "guide_site_builder" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_site_builder_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="column-block">
+            <div class="column-block-title">{{ T "index_product_guides_grow_community" | safeHTML }}</div>
+            <div class="items-wrapper">
+              <a class="column-block-card" href="{{ "doc/partner-network/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/pn-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "partner_network_guide" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_partner_network_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/login/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/login-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "login_guide" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_login_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/launcher/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/launcher-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "guides_launcher" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_launcher_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="column-block">
+            <div class="column-block-title">{{ T "index_product_guides_stay_connected" | safeHTML }}</div>
+            <div class="items-wrapper">
+              <a class="column-block-card" href="{{ "doc/chat/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/chat-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "chat_guide" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_chat_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+              <a class="column-block-card" href="{{ "doc/analytics/" | relLangURL }}">
+              <div class="product-icon">
+                <img src="{{ getenv "HUGO_CDN" }}/static/img/products/aa-new-icon.svg">
+              </div>
+              <div class="card-content">
+                <div class="card-content-title notoSansExtra">{{ T "index_product_guides_analytics" | safeHTML}}</div>
+                <div class="card-content-text notoSansRegular">{{ T "index_product_guides_analytics_desc1" | safeHTML}}&nbsp;<span class="arrow-bl-gst-bbl">→</span></div>
+                <div class="card-content-whatsin-list"></div>
+              </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="xsolla-product-block api" id="api">
+    <div class="xsolla-product-block-wrapper">
+      <h2 class="xsolla-product-title g_mb60 notoSansExtra">{{ T "index_api_references_title" | safeHTML }}</h2>
+
+      <div class="cards-flex-wrapper">
+        <div class="content-chz-block">
+          <div class="row chz-hg">
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("api/pay-station/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf paystation-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_pay_station" | safeHTML}}</div>
+            <div class="description-lpf">{{ T "index_api_references_pay_station_desc1" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("api/igs-bb/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf buy-button-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_store" | safeHTML }}</div>
+            <div class="description-lpf">{{ T "index_api_references_store_desc1" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("api/subscriptions/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf subscriptions-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_subscriptions" | safeHTML}}</div>
+            <div class="description-lpf">{{ T "index_api_references_subscriptions_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("api/login/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf login-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_login" | safeHTML }}</div>
+            <div class="description-lpf">{{ T "index_api_references_login_desc1" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("api/publisher-account/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf account-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_publisher_account" | safeHTML}}</div>
+            <div class="description-lpf">{{ T "index_api_references_publisher_account_desc1" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+            <a class="col-12 col-lg-4 ittem-lpf" href="{{ print "https://developers.xsolla.com" ("webhooks/overview/" | relLangURL) }}" target=_blank>
+            <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+            <div class="icon-lpf webhook-icon"></div>
+            <div class="title-lpf">{{ T "index_api_references_webhook" | safeHTML}}</div>
+            <div class="description-lpf">{{ T "index_api_references_webhook_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+            </a>
+          </div>
+        </div>
+        <div class="get-started-block">
+          <div class="get-started-card">
+            <div class="get-started-icon"></div>
+            <div class="get-started-card-title notoSansExtra">{{ T "index_api_references_get_started_title" | safeHTML }}</div>
+            <div class="get-started-card-text notoSansRegular">{{ T "index_api_references_get_started_desc1" | safeHTML }}</div>
+            <a href="{{ "api/" | relLangURL }}getting-started" class="button button_primary button_wide">{{ T "index_api_references_get_started_button" | safeHTML }}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="links-list-wrapper">
+        <div class="links-list-title notoSansRegular">{{ T "index_api_references_recipes_title" | safeHTML }}</div>
+        <div class="hrLine"></div>
+        <div class="links-container">
+          <div class="column">
+            <a href="{{ "doc/in-game-store/how-to/cross-inventory/" | relLangURL}}" class="arrow-link">{{ T "recipes_cross_inventory" }} &nbsp;<span class="arr-sp">→</span></a>
+            <a href="{{ "doc/buy-button/features/entitlement-system/" | relLangURL}}" class="arrow-link">{{ T "recipes_entitlement_system" }} &nbsp;<span class="arr-sp">→</span></a>
+            <a href="{{ "doc/pay-station/features/refund/" | relLangURL}}" class="arrow-link">{{ T "pay_station_features_refund" }} &nbsp;<span class="arr-sp">→</span></a>
+          </div>
+          <div class="column">
+            <a href="{{ "doc/login/security/connecting-oauth2/" | relLangURL}}" class="arrow-link">{{ T "login_features_connecting_oauth2" }} &nbsp;<span class="arr-sp">→</span></a>
+            <a href="{{ "doc/login/authentication-options/cross-platform-account/" | relLangURL}}" class="arrow-link">{{ T "login_features_cross_platform_account" }} &nbsp;<span class="arr-sp">→</span></a>
+            <a href="{{ "doc/login/security/single-sign-on/" | relLangURL}}" class="arrow-link">{{ T "login_features_single_sign_on" }} &nbsp;<span class="arr-sp">→</span></a>
+          </div>
+          <div class="column">
+            <a href="{{ "doc/partner-network/features/tracking-analytics/" | relLangURL}}" class="arrow-link">{{ T "partner_network_features_tracking_analytics" }} &nbsp;<span class="arr-sp">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="xsolla-product-block sdk" id="sdk">
+    <div class="xsolla-product-block-wrapper">
+      <h2 class="xsolla-product-title notoSansExtra">{{ T "index_sdks_libraries_title" | markdownify }}</h2>
+      <div class="sdk-cards-wrapper">
+        <a class="card" href="{{ "sdk/unity/" | relLangURL }}">
+        <div class="card-icon unity-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_unity" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_unity_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/unreal-engine/" | relLangURL }}">
+        <div class="card-icon unreal-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_unreal_engine" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_unreal_engine_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/android/" | relLangURL }}">
+        <div class="card-icon android-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_android" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_android_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/ios/" | relLangURL }}">
+        <div class="card-icon ios-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_ios" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_ios_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/cocos/" | relLangURL }}">
+        <div class="card-icon cocos-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_cocos" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_cocos_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/baas-templates/" | relLangURL }}">
+        <div class="card-icon baas-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_baas" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_baas_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+        <a class="card" href="{{ "sdk/php/" | relLangURL }}">
+        <div class="card-icon php-icon"></div>
+        <div class="card-title notoSansExtra">{{ T "index_sdks_libraries_php" | safeHTML }}</div>
+        <div class="card-text">{{ T "index_sdks_libraries_php_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        </a>
+      </div>
+  </section>
+
+  <section class="xsolla-product-block help" id="help">
+    <div class="xsolla-product-block-wrapper">
+      <div class="box">
+        <h2 class="xsolla-product-title notoSansExtra">{{ T "index_help_support_title" | safeHTML }}</h2>
+        <div class="help-cards-wrapper">
+          <a class="card" href="{{ "doc/faq/" | relLangURL }}">
+          <div class="help-card-icon faq"></div>
+          <div class="help-card-title notoSansExtra">{{ T "index_help_support_faq_title" | safeHTML }}</div>
+          <div class="help-card-text notoSansRegular">{{ T "index_help_support_faq_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+          </a>
+          <a class="card" href='https://xsolla.com{{ relLangURL "partner-support"}}' target="_blank">
+            <div class="help-card-icon support"></div>
+            <div class="help-card-title notoSansExtra">{{ T "index_help_support_support_feedback_title" | safeHTML }}</div>
+            <div class="help-card-text notoSansRegular">{{ T "index_help_support_support_feedback_desc1" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+          </a>
+          <div class="card">
+            <div class="help-card-icon integ_team"></div>
+            <div class="help-card-title notoSansExtra">{{ T "index_help_support_integration_team_title" | safeHTML }}</div>
+            <div class="help-card-text notoSansRegular">{{ T "index_help_support_integration_team_desc1" | markdownify }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,15 @@
+<div>
+    <div class="contentRightMenu__stickyContent">
+        <div class="contentRightMenu g_hidden" id="contentsRightMenu">
+            {{ $headers := findRE "<h(2|3 data-tag='right-menu').*?>(.|\n)*?</h(2|3)>" .Content  }}
+            {{if ne (len $headers) 0}}
+                <div class="heading__label">{{ T "general_contents" }}</div>
+                <ul class="contentRightMenu__menuWrapper">
+                    {{range $headers}}
+                        {{ . | replaceRE "<h(2|3 data-tag='right-menu') id=\"(.*?)\".*?>(.*?)</h(2|3)>" "<li class=\"contentRightMenu__item contentRightMenu__item_h$4\"><a class=\"link_slate\" href=\"#$2\">$3</a>" | safeHTML }}
+                    {{end}}
+                </ul>
+            {{end}}
+        </div>
+    </div>
+</div>

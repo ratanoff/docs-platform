@@ -1,0 +1,6 @@
+<!-- Заголовок нового гайда -->
+<div class="newGuide__child">
+    <h1 class="newGuide__title heading_navy">{{ T (.Get "title") | safeHTML }}</h1>
+    {{ with .Get "description" }} <p class="bodyText_large">{{ T (.) }}</p>
+    {{ end }}
+</div>

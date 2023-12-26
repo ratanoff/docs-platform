@@ -1,0 +1,15 @@
+<div class="contextReportBlock contextReportBlock__mainForm g_hidden">
+  <div class="contextReportBlock__closeButton"><img src="{{ getenv "HUGO_CDN" }}/images/context_report_cross.svg"></div>
+  <div class="contextReportBlock__title heading_h5">{{ T "context_report_form_title" }}</div>
+  <div class="contextReportBlock__text">{{ T "context_report_form_desc" }}</div>
+  <form class="contextReportBlock__form">
+    <textarea required placeholder="{{ T "context_report_form_comment_placeholder" }}" type="text" class="contextReportBlock__comment"></textarea>
+    <input type="email" placeholder="{{ T "context_report_form_email_placeholder" }}" type="text" class="contextReportBlock__email">
+    <button class="contextReportBlock__sendButton button button_primary">{{ T "feedback_form_send" }}</button>
+  </form>
+  <div class="contextReportBlock__formComment">{{ T "context_report_form_about" }}</div>
+</div>
+
+<div class="contextReportBlock contextReportBlock__thankYou g_hidden">
+  <div class="heading__noAnchor heading_h4">{{ T "feedback_form_after_send_title" }}</div>
+</div>

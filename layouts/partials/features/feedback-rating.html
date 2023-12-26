@@ -1,0 +1,23 @@
+<div class="feedbackRating_compact g_transparent">
+    <span class="p_small">{{ T "feedback_rating_title" }}</span>
+</div>
+<div id="feedbackRatingWidget" class="feedbackRating g_transparent">
+    <button class="feedbackRating__closeButton g_mb20"><img src="{{ getenv "HUGO_CDN" }}/static/img/close-icon.svg"></button>
+    <div class="feedbackRating__starsWrapper g_mb20">
+        <h5 class="feedbackRating__title g_mb10 id_title">{{ T "feedback_rating_title" }}</h5>
+            {{ range $i, $sequence := (seq 5) }}
+                <button class="feedbackRating__star" data-star="{{ $sequence }}">
+                    <svg width="40" height="40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 3.906l3.905 9.389.352.846.913.073 10.136.813-7.722 6.615-.696.596.212.891 2.36 9.891-8.678-5.3-.782-.478-.782.478-8.678 5.3 2.36-9.89.212-.892-.696-.596-7.722-6.615 10.136-.813.913-.073.352-.846L20 3.905z" fill="currentColor"/>
+                    </svg>
+                </button>
+            {{ end }}
+    </div>
+    <form class="feedbackRating__answerForm g_hidden" id="feedbackForm">
+            <span class="feedbackRating__title p_bold g_mb10">{{ T "feedback_form_yes_desc" }}</span>
+            <textarea rows="4" required class="feedbackRating__textarea"></textarea>
+            <button class="button button_primary button_small feedbackRating__button" type="submit">{{ T "feedback_form_send" }}</button>
+        </form>
+    <p class="feedbackRating__dontAnswer p_small">{{ T "feedback_rating_dont_want_to_answer" }}</p>
+    <h5 class="feedbackRating__title g_hidden id_thankYou">{{ T "feedback_form_after_send_title" }}</h5>
+</div>

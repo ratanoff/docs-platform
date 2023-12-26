@@ -1,0 +1,105 @@
+{{/* версии разделов в обратном порядке (v3,v2,v1) */}}
+
+{{ $sections:= (sort (.Site.GetPage "section" "api" ).Sections ".File.Dir" "desc")}}
+{{ $currentVersion:=(index (split .File.Dir "/") 1) | default (index (split (index $sections 0).File.Dir "/") 1) }}
+
+<!-- {{ range $sections }}
+  {{ $version:=(index (split .File.Dir "/") 1) }}
+  {{ if eq $currentVersion $version}}
+    {{ range .Pages }}
+      <h1>{{ .Title | T}}</h1>
+    {{end}}
+  {{end}}
+{{end}} -->
+
+<main class="main content">
+  <div class="content-title-ft">
+    <div class="title-g-content">{{ T "header_api" | safeHTML }}</div>
+    <div class="swicher-version-block">
+      <div class="dropdown">
+        <button class="btn btn-outline-light dropdown-toggle version-switcher" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ range $index, $section := $sections }}
+              {{ $version:=(index (split .File.Dir "/") 1) }}
+                {{ if eq $version $currentVersion }}
+                  {{$version}}.0 {{ if eq $index 0 }} (latest) {{ end }}
+                {{ end }}
+          {{ end }}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right version-switcher-list" aria-labelledby="dropdownMenuButton">
+          {{ range $index, $section := $sections }}
+            {{ $version:=(index (split .File.Dir "/") 1) }}
+          <a class="version-switcher-link {{ if eq $version $currentVersion }} is-active {{ end }}" href="{{ (strings.TrimPrefix "/" $section.File.Dir) | relLangURL }}">{{$version}}.0 {{ if eq $index 0 }} (latest) {{ end }}</a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="gs-section on-title">
+    <div class="content-gss">
+      <div class="box-gss bs_right_top">
+        <div class="top-title-b-gss">
+          <div class="l-title-line-b-gss">
+            <div class="tblock-b-gss"> &lt;Reference&gt; </div>
+            <div class="line-b-gss"></div>
+          </div>
+            <div class="ogr-wg-box">
+              <span class="g-title-wg">
+                {{ T "api_index_reference_desc1" }}
+              </span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="content-chz-block">
+    <div class="row chz-hg">
+      <a class="col-12 col-lg-4 ittem-lpf" href="{{ "api/" | relLangURL }}{{ $currentVersion }}/getting-started">
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf get-started-icon"></div>
+        <div class="title-lpf">{{ T "api_index_getting_started" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_getting_started_desc1" | safeHTML }}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="{{ "api/" | relLangURL }}{{ $currentVersion }}/pay-station">
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf paystation-icon"></div>
+        <div class="title-lpf">{{ T "api_index_paystation" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_paystation_desc1" | safeHTML}}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="https://developers.xsolla.com/store-api/" target=_blank>
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf buy-button-icon"></div>
+        <div class="title-lpf">{{ T "api_index_store" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_store_desc1" | safeHTML}}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="https://developers.xsolla.com/api/subscriptions/overview/">
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf subscriptions-icon"></div>
+        <div class="title-lpf">{{ T "api_index_subscriptions" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_subscriptions_desc1" | safeHTML }}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="https://developers.xsolla.com/api/login/overview/">
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf login-icon"></div>
+        <div class="title-lpf">{{ T "api_index_login" | safeHTML }}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_login_desc1" | safeHTML}}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="{{ "api/" | relLangURL }}{{ $currentVersion }}/publisher-account">
+        <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+        <div class="icon-lpf account-icon"></div>
+        <div class="title-lpf">{{ T "api_index_account" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+        <div class="description-lpf">{{ T "api_index_account_desc1" | safeHTML}}</div>
+      </a>
+      <a class="col-12 col-lg-4 ittem-lpf" href="{{ "https://developers.xsolla.com/webhooks/overview/" | relLangURL }}" target=_blank>
+      <span class="w-border"><span class="w-border-ittem wbi-top"></span><span class="w-border-ittem wbi-bottom"></span></span>
+      <div class="icon-lpf webhook-icon"></div>
+      <div class="title-lpf">{{ T "index_api_references_webhook" | safeHTML}}</div>
+      <div class="description-lpf">{{ T "index_api_references_webhook_desc1" | safeHTML}}&nbsp;<span class="arr-sp">→</span></div>
+      </a>
+    </div>
+  </div>
+  <section class="gs-section on-bottom">
+    <div class="content-gss">
+      <div class="box-gss bs_left_bottom"></div>
+    </div>
+  </section>
+</main>

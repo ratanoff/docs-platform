@@ -1,0 +1,35 @@
+{{ $blockIndex := (index .Params 0) }}
+{{ if and ($blockIndex) (gt $blockIndex 0) }}
+<div class="simple-tabs-container" data-id="{{index .Params 0}}">
+    <ul class="simple-tabs-button-wrapper">
+        {{range $key, $value := .Params}}
+        {{if not (eq $value $blockIndex)}}
+        {{$valueArray := (split $value "/")}}
+            <li class="simple-tabs-item">
+            {{if eq $key 1}}
+            <button class="simple-tabs-item-link active" data-tab-id="{{(index $valueArray 1)}}" tab-id="{{(index $valueArray 0)}}">{{T (index $valueArray 0) | safeHTML}}</a>
+                {{else}}
+            <button class="simple-tabs-item-link" data-tab-id="{{(index $valueArray 1)}}" tab-id="{{(index $valueArray 0)}}">{{T (index $valueArray 0) | safeHTML}}</a>
+            {{end}}
+                <a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a>
+            </li>
+            {{end}}
+        {{end}}
+    </ul>
+</div>
+{{else}}
+<div class="simple-tabs-container">
+    <ul class="simple-tabs-button-wrapper">
+        {{range $key, $value := .Params}}
+        {{$value = (index (split $value "/") 0)}}
+        <li class="simple-tabs-item">
+            {{if eq $key 0}}
+            <button class="simple-tabs-item-link active" tab-id="{{$value}}">{{T $value | safeHTML}}</a>
+                {{else}}
+                <button class="simple-tabs-item-link" tab-id="{{$value}}">{{T $value | safeHTML}}</a>
+                    {{end}}
+        </li>
+        {{end}}
+    </ul>
+</div>
+{{end}}

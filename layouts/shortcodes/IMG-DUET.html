@@ -1,0 +1,7 @@
+
+{{ $img_top := (.Get 0) }}
+{{ $img_bottom := (.Get 1) }}
+<figure>
+    <img src="{{ getenv "HUGO_CDN" }}/images/{{ $img_top }}" style="max-width: 100%" height="auto" class="screenshots screenshots__top">
+    <img src="{{ getenv "HUGO_CDN" }}/images/{{ $img_bottom }}" style="max-width: 100%" height="auto" class="screenshots screenshots__bottom">
+</figure>

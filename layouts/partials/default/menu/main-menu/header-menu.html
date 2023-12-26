@@ -1,0 +1,34 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+{{ $permalink := .Permalink | relLangURL }}
+
+{{if in .File.Dir "_archive"}}
+    {{$archivePathIndex := 4}}
+    {{if (ne .Site.Language.Lang "en")}}
+        {{$archivePathIndex = 5}}
+    {{end}}
+    {{$openedVersion := index (split .RelPermalink "/") $archivePathIndex}}
+    {{$contentRootPage = .GetPage (print .Section "/" $contentRootDir "/_archive/" $openedVersion)}}
+{{end}}
+
+<ul class="list sideMenu__list sideMenu__item _active">
+    <li class="list__item {{if eq $contentRootPage.RelPermalink $permalink}}_active{{end}}">
+        <a class="nav-link {{if eq $contentRootPage.RelPermalink $permalink}}_active{{end}}"
+           href="{{$contentRootPage.Permalink | relLangURL}}">
+            {{T "general_overview" | safeHTML}}
+        </a>
+    </li>
+
+    {{$headersBlock := findRE "<div class=\"headings-hidden\" (.|\n)*?>(.|\n)*?</div>" $contentRootPage.Content }}
+    {{range $headersBlock}}
+        {{ $headers := findRE "<a.*?>(.|\n)*?</a>" .}}
+        {{ range $headers }}
+            {{ $href := index (findRE `href="(.+?)"` .) 0 }}
+            {{ $link := replaceRE `"` "" (replaceRE `href="` "" $href) }}
+            <li class="list__item {{ if eq $link $permalink }} _active {{ end }}">
+                {{ . | safeHTML }}
+            </li>
+        {{end}}
+    {{end}}
+</ul>

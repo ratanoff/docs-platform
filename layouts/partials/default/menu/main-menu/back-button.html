@@ -1,0 +1,10 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+
+<a class="sideMenu__item button button_backTo c-icon arrow-alt-left"
+   role="button"
+   href="{{(print "#" $contentRootPage.Section) | relLangURL}}"
+>&nbsp;
+    {{ T "menu_back_to_docs" | safeHTML }}
+</a>

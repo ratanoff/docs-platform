@@ -1,0 +1,12 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+
+
+
+<a href="{{ with $contentRootPage.File}} {{ .Dir | relLangURL}} {{end}}" class="sideMenu__header sideMenu__item">
+    <h2 class="sideMenu__heading">{{ T $contentRootPage.Title | safeHTML }}</h2>
+    {{if ne .Params.icon_path nil}}
+        <img class="sideMenu__heading_withImage" src="{{ getenv "HUGO_CDN" }}/images/{{ .Params.icon_path }}">
+    {{end}}
+</a>

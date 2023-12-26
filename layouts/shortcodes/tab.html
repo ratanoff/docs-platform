@@ -1,0 +1,7 @@
+{{ range .Params -}}
+<div class="tab-block hidden" tab-target="{{ . }}">
+    {{- end -}}
+    {{ .Inner | markdownify }}
+    {{- range .Params -}}
+</div>
+{{- end }}

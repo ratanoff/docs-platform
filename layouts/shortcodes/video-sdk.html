@@ -1,0 +1,1 @@
+<video controls playsinline webkitallowfullscreen mozallowfullscreen allowfullscreen {{ with .Get "width"}} width="{{.}}"{{ end }} {{ with .Get "class"}} class="{{.}}"{{ end }} poster="{{ getenv "HUGO_CDN" }}/static/img/{{ (.Get "poster") }}"><source src="{{ getenv "HUGO_CDN" }}/static/img/{{ (.Get "source") }}" type='video/mp4'/></video>

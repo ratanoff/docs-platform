@@ -1,0 +1,47 @@
+<main class="main content main-content all-site-wrap oldLayout">
+    <nav class="content-wrapper-guide menu-guide bs-docs-sidebar" id="guide-menu">
+        <div class="pf-x sidebar__inner">
+            <div class="menu-guide-content navbar-e">
+                <div class="back-button">
+                    <a href="{{ printf "%s%s" "#" .Section | relLangURL }}" class="c-icon arrow-alt-left">&nbsp;{{ T "menu_back_to_docs" | safeHTML}}</a>
+                </div>
+                <div class="menu-header"><a href="#{{ .Title }}" class="c-menu-i">{{ T .Title | safeHTML }}</a></div>
+                {{ $headers := findRE "<h[1-3].*?>(.|\n)*?</h[1-3]>" .Content }}
+                <ul class="nav nav-stacked fixed ff-s">
+                    {{ $.Scratch.Set "open" false }}
+                    {{ range $headers }}
+                    {{/* заголовок второго уровня */}}
+                    {{ if eq ( substr . 2 1 )  "2" }}
+                    {{ if eq ( $.Scratch.Get "open" ) true }}
+                    {{  $.Scratch.Set "open" false }}
+                </ul>
+            {{ end }}
+                {{ . | replaceRE "<h2 id=\"(.*?)\".*?>(.*?)</h2>" "<li class=\"nav-item\"><a href=\"#$1\" class=\"nav-link\">$2</a>" | safeHTML }}
+                {{ else }}
+                {{ if eq ( $.Scratch.Get "open" ) false }}
+                {{  $.Scratch.Set "open" true }}
+                <ul class="nav nav-stacked">
+                    {{ end }}
+                    {{ . | replaceRE "<h(3|3 data-tag='right-menu') id=\"(.*?)\".*?>(.*?)</h3>" "<li class=\"nav-item\"><a href=\"#$2\" class=\"nav-link sub-link\">$3</a></li>" | safeHTML }}
+                    {{ end }}
+                    {{ end }}
+
+                </ul></li>
+            </div>
+        </div>
+    </nav>
+    <div class="page-wrap content-guide content section-description">
+        <article>
+            <div class="itv-title">
+                <h1 id="{{ .Title }}">{{ T .Title | safeHTML }}</h1>
+            </div>
+            <div class="article-content">
+                {{ .Content | markdownify  }}
+                {{ partial "features/feedback.html" . }}
+                {{ partial "features/feedback-rating.html" }}
+                {{ partial "features/lastMod.html" . }}
+                {{ partial "features/contextReportInfo.html" }}
+            </div>
+        </article>
+    </div>
+</main>

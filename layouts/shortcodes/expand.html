@@ -1,0 +1,17 @@
+<div class="expand">
+  <div class="expand-label" style="cursor: pointer; color: #0076ff;" onclick="$h = $(this);$h.next('div').slideToggle(100,function () {$h.children('i').attr('class',function () {return $h.next('div').is(':visible') ;});});">
+      <span>
+      {{$expandMessage := T "recipes_show_more"}}
+        {{ if .IsNamedParams }}
+          {{.Get "default" | default $expandMessage}}
+        {{else}}
+        {{.Get 0 | default $expandMessage}}
+      {{end}}
+    </span>
+    <span class="arr-sp">→</span>
+  </div>
+  <div class="expand-content" style="display: none;">
+      {{.Inner | safeHTML}}
+  </div>
+  <p></p>
+</div>

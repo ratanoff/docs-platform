@@ -1,0 +1,8 @@
+<div class="email-box">
+    <h3 class="email-box-header">{{ T ( .Get 0) }}</h3>
+    <form action="POST" class="send-email-form">
+        <input type="text" placeholder="Email" name="email" type="email" required>
+        <button class="send-btn">{{ T ( .Get 1) }} </button>
+    </form>
+    <p class="text">{{ T (.Get 2) | markdownify }}</p>
+</div>

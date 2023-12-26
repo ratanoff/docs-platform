@@ -1,0 +1,21 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+{{$currentPageTitle := .Title}}
+
+{{if eq $contentRootPage.Title $currentPageTitle}}
+    {{$currentPageTitle = "general_overview"}}
+{{end}}
+
+<div class="mobileMenuWrapper" id="mobileMenuWrapper">
+    <div class="mobileMenuWrapper__header _id_mobileMenuHeader">
+        <span class="mobileMenuWrapper__title">{{ T $contentRootPage.Title | safeHTML }} / {{ T $currentPageTitle  | safeHTML }}</span>
+        <div class="mobileMenuWrapper__icon"></div>
+    </div>
+
+    <div class="mobileMenuWrapper__content _id_mobileMenuContent">
+        <div class="mobileMenuWrapper__inner">
+            {{partial "default/menu/main-menu/main-menu.html" . }}
+        </div>
+    </div>
+</div>

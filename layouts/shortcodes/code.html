@@ -1,0 +1,91 @@
+{{/* блок форматирования кода*/}}
+{{ $p := .Get 0 }}
+{{ $with_numbers := or (eq (index .Params 1) "numbers") (eq (index .Params 2) "numbers") }}
+{{ $codeFile := $p | printf "/code/%s" }}
+{{ if fileExists $codeFile }}
+{{ $fileContents := split (readFile $codeFile) "****" }}
+{{ $langIsHave := (findRE "```[a-z]+\r\n" (index $fileContents 0))}}
+
+{{ $contentInMd := "" }}
+{{if and $with_numbers (not (index $langIsHave 0))}}
+{{ $contentInMd = ((replace (index $fileContents 0) "```\r\n" "```http\r\n") | markdownify ) }}
+{{else}}
+{{$contentInMd = ((index $fileContents 0) | markdownify )}}
+{{end}}
+
+{{ $langs := (findRE "```[ a-z]+" (index $fileContents 0) ) }}
+{{ $moreThenOne := gt (len $langs) 1}}
+
+<div class="codeTabs codeTabs_btShadow {{ if eq $moreThenOne true}}list{{else}}single{{end}} metrics">
+<div class="iconCodeControl">
+<div class="iconCodeControl__icon iconCodeControl__clipboardButton iconCodeControl__copyButton">
+<div class="codeblockTooltip codeblockTooltip_copy"><small>Copy</small></div>
+</div>
+<div class="iconCodeControl__icon iconCodeControl__fullSbutton">
+<div class="codeblockTooltip codeblockTooltip_full"><small>Full screen</small></div>
+<div class="codeblockTooltip codeblockTooltip_small"><small>Small screen</small></div>
+</div>
+</div>
+{{ if eq $moreThenOne true}}
+<div class="codeMenu__mobile">
+<div class="langTitle">
+{{ range $index, $element := $langs }}
+{{ $lang := (replace (replace $element "`" "") " " "" )  }}
+{{ $langView :=(replace $lang "shell" "curl" ) }}
+{{ $langView :=(replace $langView "csharp" "C#" ) }}
+{{ $langView :=(replace $langView "cpp" "C++" ) }}
+{{ if eq $index 0 }}<span class="langTitle__text">{{ $langView }}</span>{{ end }}
+{{ if eq $index 1 }}<span class="caret"></span>{{ end }}
+{{ end }}
+</div>
+</div>
+{{end}}
+<ul class="codeTabs__nav">
+{{ if eq $moreThenOne true}}
+{{ range $index, $element := $langs }}
+{{ $lang := (replace (replace $element "`" "") " " "" )  }}
+{{ $langView :=(replace $lang "shell" "curl" ) }}
+{{ $langView :=(replace $langView "csharp" "C#" ) }}
+{{ $langView :=(replace $langView "cpp" "C++" ) }}
+<li class="codeTabs__tab {{ if eq $index 0 }}is-active{{ end }}" data-code-lang="{{ $lang }}" data-id="api_code_snippet_lang-{{ $langView }}">
+<div class="codeTabs__tabName">{{ $langView }}</div>
+<div class="codeTabs__tabBullet"></div>
+</li>
+{{end}}
+{{else}}
+{{ $lang := (replace (replace (index $langs 0) "`" "") " " "" )  }}
+{{ $langView :=(replace $lang "shell" "curl" ) }}
+{{ $langView :=(replace $langView "csharp" "C#" ) }}
+{{ $langView :=(replace $langView "cpp" "C++" ) }}
+{{if ne $langView ""}}
+<li class="codeTabs__tabLink is-active" data-id="api_code_snippet_lang-{{ $langView }}">
+<div class="codeTabs__tabName">{{ $langView }}</div>
+</li>
+{{end}}
+{{ end }}
+</ul>
+
+{{ if $with_numbers}}
+  <div class="codeTabs__content with_numbers">
+{{else}}
+  <div class="codeTabs__content">
+{{end}}
+
+{{/* подстановка is-active для первого элемента*/}}
+{{ if gt ( len $contentInMd) 0 }}
+<div class="highlight is-active">
+{{  (strings.TrimPrefix "<div class=\"highlight\">" $contentInMd ) | safeHTML }}
+{{end}}
+
+</div>
+</div>
+{{else}}
+<!-- Remove comments when unused code .md files will be deleted -->
+{{/* errorf "Invalid <code> path %s \n " $p */}}
+{{/* errorf .Path */}}
+<div class="codeTabs chroma">
+  <p class="codeTabs__content cp">
+    No path found for code block
+  </p>
+</div>
+{{end}}

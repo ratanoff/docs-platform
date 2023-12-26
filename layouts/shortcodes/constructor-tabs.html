@@ -1,0 +1,18 @@
+{{ $tabGroup := .Get 1 }}
+<div class="btn-content-container {{ .Get 0 }}">
+    <div class="hr-wrapper">
+        <div class="hr-wrapper-text">{{ T (.Get 1) | safeHTML }}</div>
+        <div class="hr-wrapper-line"></div>
+    </div>
+    <div class="tabs-custom-wrapper">
+        {{- range $key, $value := .Params -}}
+        {{if gt $key 1 }}
+            {{- $id := substr (sha1 (delimit (shuffle (seq 1 9)) "")) 0 9 -}}
+                <span>
+                    <input role="tab" type="radio" name="{{ $tabGroup }}" id="{{$id}}" value="{{$value}}" {{if eq $key 2}} checked {{end}}>
+                    <label class="tabs-custom-item" for="{{$id}}">{{T $value | safeHTML}}</label>
+                </span>
+            {{- end -}}
+        {{- end -}}
+    </div>
+</div>

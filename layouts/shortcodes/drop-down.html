@@ -1,0 +1,17 @@
+<div class="accordionWrapper">
+<a href="#" id="{{ (.Get 0 ) | urlize}}" class="anchor"></a>
+<div class="accordionWrapper__accordion notoSansExtra">
+<h2 class="accordionWrapper__header g_noMargin">
+{{ T (.Get 0 ) }}
+<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#{{ (.Get 0 ) | urlize}}" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a>
+</h2>
+</div>
+<div class="accordionWrapper__panel">
+<div class="accordionWrapper__contentWrapper">
+{{ .Inner | markdownify }}
+{{ partial "features/feedback.html" . }}
+<div class="hrLine"></div>
+<a class="link hide-btn" href="#">{{ T "sdk_how_tos_hide" }}</a>
+</div>
+</div>
+</div>

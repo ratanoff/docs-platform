@@ -1,0 +1,340 @@
+<script type="text/javascript">
+  let pageSearch;
+  let checkMain;
+  let allData = [];
+  let currentSlice = defaultSlice = 5;
+  let oldSlice = 0;
+  const docSearchConfig = {
+    container: '#docsearch',
+    apiKey: '2f57c4b9fbbdb8bff20005a46661036c',
+    appId: '7HCRISZ739',
+    indexName: 'xsolla'
+  };
+  const dataSource = $('.searchContent__datasource');
+  const dsSuggestions = $(dataSource).find('.ds-suggestions');
+  const showMoreBtn = $('.searchContent__showMore');
+  const tagsWrapper = $('.searchContent__tags');
+  const availableTags = ['api', 'sdk', 'faq', 'doc'];
+  const seeAllResultText = '{{ T "search_see_all_results" }}';
+  const noResultsText = '{{ T "search_no_results_request" }}';
+  const spaceBlock = "<div class='noResultBlock'>" + '{{ T "search_no_results_space" }}' + "</div>";
+  const pageSearchSetup = {
+    container: docSearchConfig.container,
+    appId: docSearchConfig.appId,
+    apiKey: docSearchConfig.apiKey,
+    indexName: docSearchConfig.indexName,
+    inputSelector: '.searchContent__input',
+    algoliaOptions: {
+      'facetFilters': [
+        "lang:{{.Site.Language.Lang }}"
+      ],
+      hitsPerPage: 100
+    },
+    autocompleteOptions: {
+      templates: {
+        dropdownMenu: "<div style='display:none;'><div class='ds-dataset-1'></div></div>"
+      },
+      //arrow down handler fix version 1
+      // cssClasses: {
+      //   cursor: '.noCursosClass'
+      // },
+      hint: false,
+      autoselect: false,
+      autoselectOnBlur: false,
+      tabAutocomplete: false
+    },
+    queryHook: query => {
+      pageSearch.autocomplete.autocomplete.setVal(query.replace(/^\s+/g, ''));
+    },
+    handleSelected: function (input, event, suggestion, datasetNumber, context) {
+      //arrow down handler fix version 2
+    },
+    transformData: hits => {
+      $(dsSuggestions).html('');
+
+      if (hits.length > 0) {
+        allData = hits;
+        oldSlice = 0;
+        hitsHandler(hits, currentSlice);
+      } else {
+        const noResult = "<div class='noResultBlock'>" + noResultsText.replace("{request}", `"${pageSearch.autocomplete.autocomplete.getVal()}"`) + "</div>";
+        const backToDocs = '<a href="{{ "" | relLangURL }}" class="searchContent__backDocs">{{ T "menu_back_to_docs" | safeHTML}} &rarr;</a>';
+
+        $(dsSuggestions).html(noResult + backToDocs);
+        $('.searchContent__backDocs').on('click', (e) => {
+          e.preventDefault();
+          const link = $(e.currentTarget).attr('href');
+          window.location.href = link;
+        });
+        $(dataSource).removeClass('hidden');
+        hideControls();
+      }
+
+      if ($('.searchContent__input.ds-input').val().trim().length === 0) {
+        hideControls();
+        $(dsSuggestions).html(spaceBlock);
+      }
+    }
+  };
+
+  //#region Utils
+  const hitSeparator = arr => {
+    return arr.reduce((res, item) => {
+      if (res.hasOwnProperty(item.hierarchy.lvl0)) res[item.hierarchy.lvl0].push(item);
+      else res[item.hierarchy.lvl0] = [item];
+      return res;
+    }, {});
+  }
+
+  const getParameterByName = (name, url = window.location.href) => {
+    const newName = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + newName + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  const templateForSuggestion = (hit, indexInGroup) => {
+    const { lvl0, lvl1, lvl2, lvl3, lvl4, lvl5 } = hit._highlightResult.hierarchy;
+
+    let subTitle = '';
+
+    if (!lvl1 && !lvl2 && !lvl3 && !lvl4 && !lvl5) {
+      subTitle = lvl0.value;
+    } else {
+      subTitle += lvl1 ? `${lvl1.value} ${lvl2 ? ">" : ""}` : "";
+      subTitle += lvl2 ? ` ${lvl2.value} ${lvl3 ? ">" : ""}` : "";
+      subTitle += lvl3 ? ` ${lvl3.value} ${lvl4 ? ">" : ""}` : "";
+      subTitle += lvl4 ? ` ${lvl4.value} ${lvl5 ? ">" : ""}` : "";
+      subTitle += lvl5 ? ` ${lvl5.value}` : "";
+    }
+
+    const resObject = {
+      url: hit.url ? hit.url : "",
+      categoryHeader: hit.hierarchy.lvl0 ? hit.hierarchy.lvl0 : "",
+      suggestionTitle: subTitle,
+      suggestionText: hit._highlightResult.content ? hit._highlightResult.content.value : ""
+    }
+
+    return `<div class="ds-suggestion">
+      <a
+        class="algolia-docsearch-suggestion ${indexInGroup === 0 ? "algolia-docsearch-suggestion__main" : ""} algolia-docsearch-suggestion__secondary"
+        aria-label="Link to the result"
+        href="${resObject.url}">
+        <div class="algolia-docsearch-suggestion--category-header">
+            <span class="algolia-docsearch-suggestion--category-header-lvl0">${resObject.categoryHeader}</span>
+        </div>
+        <div class="algolia-docsearch-suggestion--wrapper">
+          <div class="algolia-docsearch-suggestion--content">
+            <div class="algolia-docsearch-suggestion--title">${resObject.suggestionTitle}</div>
+            <div class="algolia-docsearch-suggestion--text ${resObject.suggestionText === '' ? 'hidden' : ''}">${resObject.suggestionText}</div>
+          </div>
+        </div>
+      </a>
+    </div>`
+  };
+
+  const linkHandlers = () => {
+    $('.algolia-docsearch-suggestion').on('click', (e) => {
+      e.preventDefault();
+      const link = $(e.currentTarget).attr('href');
+      window.open(link, "_blank");
+    });
+  };
+
+  const hitsHandler = (hits, sliceIndex) => {
+    const devidedGroups = hitSeparator(hits.slice(oldSlice, sliceIndex));
+
+    Object.keys(devidedGroups).forEach(group => {
+      for (let i = 0; i < devidedGroups[group].length; i++) {
+        $(dsSuggestions).append(templateForSuggestion(devidedGroups[group][i], i));
+        $(showMoreBtn).removeClass('searchContent__showMore_hidden');
+        $(tagsWrapper).removeClass('searchContent__tags_hidden');
+        $(dataSource).removeClass('hidden');
+      }
+    });
+
+    if (sliceIndex >= allData.length) {
+      $(showMoreBtn).addClass('searchContent__showMore_hidden');
+    }
+    oldSlice = sliceIndex;
+    linkHandlers();
+  }
+
+  const hideControls = () => {
+    $(showMoreBtn).addClass('searchContent__showMore_hidden');
+    $(tagsWrapper).addClass('searchContent__tags_hidden');
+  }
+
+  const removeSearchParams = () => {
+    if (history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+  //#endregion
+
+  //#region Searches
+  if (!window.location.pathname.includes('/search/')) {
+    docsearch({
+      container: docSearchConfig.container,
+      appId: docSearchConfig.appId,
+      apiKey: docSearchConfig.apiKey,
+      indexName: docSearchConfig.indexName,
+      inputSelector: '.search__input',
+      algoliaOptions: {
+        'facetFilters': [
+          "lang:{{.Site.Language.Lang }}"
+        ],
+        hitsPerPage: 10
+      },
+      autocompleteOptions: {
+        templates: {
+          footer: `
+            <div class="searchFooter">
+              <div class="searchFooter__showAll">
+                <a id="see_all_results" class="button button_secondaryBlue button_wide" href="#">${seeAllResultText}</a>
+              </div>
+              <div class="searchFooter__logo">
+                <a class="algolia-docsearch-footer--logo" href="https://www.algolia.com">Algolia</a>
+              </div>
+            </div>
+          `
+        },
+        openOnFocus: true,
+        hint: false
+      },
+      transformData: function (hits) {
+          const G_HIDDEN = 'g_hidden';
+        if (hits.length === 0 || hits.length <= 5) {
+          $('#see_all_results').addClass(G_HIDDEN);
+          $('.searchFooter').addClass('searchFooter_noData');
+        } else {
+          $('#see_all_results').removeClass(G_HIDDEN);
+          $('.searchFooter').removeClass('searchFooter_noData');
+        }
+        return hits.slice(0, 5);
+      },
+      debug: false // Set debug to true if you want to inspect the dropdown
+    });
+  };
+
+  if ($('.searchContent__input').length > 0) {
+    pageSearch = docsearch(pageSearchSetup);
+  };
+  //#endregion
+
+  //#region eventListers
+  $('.search__input').on('input', event => {
+    if (event.target.value.length > 0) {
+      const locale = $('html').attr('lang').toLowerCase();
+      $('#see_all_results').attr('href', `${locale === 'en' ? '/' : `/${locale}/`}search?q=`.concat(event.target.value));
+    }
+  });
+
+  $('.searchContent__tags').on('click', '.button_tag', (event) => {
+    const currentBtn = $(event.currentTarget);
+    const tag = $(event.currentTarget).attr('tag').toLowerCase();
+    const currentLang = $('html').attr('lang').toLowerCase();
+
+    $('.searchContent__tags .button_tag').removeClass('button_tag_active');
+    $(currentBtn).addClass('button_tag_active');
+
+    if (tag && availableTags.includes(tag)) {
+      pageSearchSetup.algoliaOptions['facetFilters'] = [`lang:${currentLang}`, `tags:${tag}`];
+    } else {
+      pageSearchSetup.algoliaOptions['facetFilters'] = [`lang:${currentLang}`];
+    }
+
+    currentSlice = defaultSlice;
+    pageSearch.autocomplete.autocomplete.destroy();
+    pageSearch = docsearch(pageSearchSetup);
+    pageSearch.autocomplete.autocomplete.setVal($('.searchContent__input.ds-input').val().replace(/^\s+/g, ''));
+    pageSearch.autocomplete.autocomplete.open();
+
+  });
+
+  $('.searchContent__input.ds-input').on('input', event => {
+    if (event.target.value.length === 0) {
+      $(dataSource).addClass('hidden');
+      removeSearchParams();
+      $('.searchCross').addClass('hidden');
+    }
+
+    if (event.target.value.length >= 1) {
+      $(dataSource).removeClass('hidden');
+      $('.searchCross').removeClass('hidden');
+
+      if (history.replaceState) {
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?q=' + event.target.value;
+        window.history.replaceState({ path: newurl }, '', newurl);
+      }
+
+      if (event.target.value.trim().length === 0) {
+        hideControls();
+        $(dsSuggestions).html(spaceBlock);
+      }
+    }
+  });
+
+  $(showMoreBtn).on('click', () => {
+    currentSlice += defaultSlice;
+
+    if (currentSlice < allData.length) {
+      hitsHandler(allData, currentSlice);
+    } else {
+      const diffToEnd = currentSlice - allData.length;
+
+      if (diffToEnd !== 0) {
+        hitsHandler(allData, currentSlice - diffToEnd);
+        $(showMoreBtn).addClass('searchContent__showMore_hidden');
+      } else {
+        hitsHandler(allData, currentSlice);
+        $(showMoreBtn).addClass('searchContent__showMore_hidden');
+      }
+    }
+  });
+
+  $('.searchCross').on('click', () => {
+    $(dataSource).addClass('hidden');
+    $('.searchContent__input').val('');
+    removeSearchParams();
+    $('.searchCross').addClass('hidden');
+    currentSlice = defaultSlice;
+  });
+
+  $(document).ready(() => {
+    $('body').on('click', '._toggle-search', () => {
+      $('.search__wrapper').toggleClass('search__wrapper_open');
+      $('.search__input').focus();
+
+      $('.hamburgerMenu').removeClass('_change');
+      $('#dropdownMobileMenu').removeClass('_active');
+      $('body').removeClass('g_isFixed');
+    });
+
+    $(document).mouseup((e) => {
+      var div = $('.search__wrapper');
+
+      if (!div.is(e.target) && div.has(e.target).length === 0) {
+        div.removeClass('search__wrapper_open');
+      }
+    });
+  });
+  // #endregion
+
+  if (window.location.pathname.includes('/search/')) {
+    $('.header__controls .search').addClass('hidden');
+    let searchParam = getParameterByName('q');
+
+    if (searchParam) {
+      pageSearch.autocomplete.autocomplete.setVal(searchParam);
+      pageSearch.autocomplete.autocomplete.open();
+    } else {
+      $('.searchCross').addClass('hidden');
+      removeSearchParams();
+      $(dataSource).addClass('hidden');
+    }
+  }
+
+</script>

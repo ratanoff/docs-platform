@@ -1,0 +1,57 @@
+{{ $headers := split (.Get "headers") " " }}
+{{ $links := split (.Get "links") " " }}
+{{ $data := index .Site.Data (.Get "filename") }}
+{{ $isSDK := (.Get "isSDK") }}
+<div class="comparisonTableWrapper">
+    <table class="comparisonTable {{ with $isSDK }}SDK{{ end }}">
+        <thead>
+        <th></th>
+        {{- range $headers -}}
+            <th class="comparisonTable__cell_header heading_h5 heading_navy">{{ T . }}</th>
+        {{- end -}}
+        </thead>
+        <tbody>
+        {{ range $data }}
+            {{- if (ne .functions nil ) -}}
+                <tr>
+                    <td colspan="{{ add (len $headers) 1 }}"
+                        class="comparisonTable__cell p_bold comparisonTable_highlighted">{{ T .name }}</td>
+                </tr>
+                {{- range $index, $element := .functions -}}
+                    <tr>
+                        <td class="comparisonTable__cell feature-{{$index}}"><span>{{ T $element.name }}</span></td>
+                        {{- range $element.values -}}
+                            <td class="comparisonTable__cell comparisonTable__cell_title p_bold">{{ . }}</td>
+                        {{- end -}}
+                    </tr>
+                    {{- if (ne .description nil) -}}
+                        <tr class="description-{{$index}}">
+                            <td class="comparisonTable__cell comparisonTable__cell_description p_small">{{ replace ( T .description ) "#1" ( .link | relLangURL ) | markdownify }}</td>
+                            <td class="comparisonTable__cell comparisonTable__cell_description"></td>
+                            <td class="comparisonTable__cell comparisonTable__cell_description"></td>
+                            <td class="comparisonTable__cell comparisonTable__cell_description"></td>
+                        </tr>
+                    {{- end -}}
+                {{- end -}}
+            {{- else -}}
+                <tr class="comparisonTable_highlighted">
+                    <td class="comparisonTable__cell comparisonTable__cell_last p_bold">{{ T .name }}</td>
+                    {{- range .values -}}
+                        <td class="comparisonTable__cell comparisonTable__cell_last p_bold">{{ . }}</td>
+                    {{- end -}}
+                </tr>
+            {{- end -}}
+        {{ end }}
+        <tr>
+            {{- if gt ( len $links ) 1 -}}
+                <td></td>
+                {{- range $links -}}
+                    <td class="comparisonTable__buttonCell"><a href="{{(strings.TrimPrefix "/" .) | relLangURL }}"
+                                                               class="button button_secondaryBlue comparisonTable__button">{{ T "sdk_table_button_title" }}</a>
+                    </td>
+                {{- end -}}
+            {{- end -}}
+        </tr>
+        </tbody>
+    </table>
+</div>

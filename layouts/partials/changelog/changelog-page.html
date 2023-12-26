@@ -1,0 +1,159 @@
+{{ $monthNames := (index $.Site.Data.langs.dates .Site.Language.Lang) }}
+{{ $.Scratch.Set "AllMonthNames" $.Site.Data.langs.dates }}
+{{ $.Scratch.Set "Lang" .Site.Language.Lang }}
+
+{{ $.Scratch.Set "currentYear" "" }}
+{{ $.Scratch.Set "currentMonth" "" }}
+{{ $.Scratch.Set "currentTag" "" }}
+
+{{ $prefix:= ("changelog/tags/" | relLangURL)}}
+{{ if hasPrefix .Page.RelPermalink $prefix }}
+    {{ $tag := replace (strings.TrimPrefix $prefix .Page.RelPermalink ) "/" "" }}
+    {{ $.Scratch.Set "currentTag" $tag }}
+{{ else }}
+    {{ $prefix:= ("changelog/" | relLangURL)}}
+    {{ if hasPrefix .Page.RelPermalink $prefix }}
+        {{ $currentMonth := replace ((strings.TrimPrefix $prefix .Page.RelPermalink )) "/" "" }}
+        {{ $.Scratch.Set "currentMonth" $currentMonth }}
+    {{ end }}
+{{ end }}
+
+{{ if ne ($.Scratch.Get "currentMonth") "" }}
+    {{ $.Scratch.Set "currentYear" (substr ($.Scratch.Get "currentMonth") 0 4) }}
+{{ end }}
+
+{{ $pagesByYear := (where $.Site.Pages "Section" "changelog").GroupByDate "2006"}}
+
+<div class="changelog_m_box">
+  <div class="changelog_m_box_g_text">
+    <div class="changelog_m_box_text">
+      <span id="cp-date-t"></span>
+    </div>
+  </div>
+</div>
+<main class="main content main-content all-site-wrap changelog-box oldLayout">
+	<nav class="content-wrapper-guide menu-guide bs-docs-sidebar" id="guide-menu">
+		<div class="pf-x sidebar__inner">
+			<div class="menu-guide-content navbar-e">
+                <div class="back-button">
+                    <a href="{{ "#updates" | relLangURL }}" class="c-icon arrow-alt-left">&nbsp;{{ T "menu_back_to_docs" | safeHTML }}</a>
+                </div>
+                <div class="menu-header"><a href="#changelog" class="c-menu-i">{{ T "changelog" }}</a></div>
+				<ul class="nav nav-stacked fixed ff-s">
+          {{ range $pagesByYear }}
+              {{ if eq ($.Scratch.Get "currentYear") "" }}
+                  {{ $.Scratch.Set "currentYear" .Key }}
+              {{ end }}
+              {{ $.Scratch.Set "yearPrinted" false }}
+                  {{ $pagesByYearAndMonth := .Pages.GroupByDate "2006-01" }}
+                  {{ $pagesByYearAndMonthCount := len $pagesByYearAndMonth }}
+                  {{ range $k,$v := $pagesByYearAndMonth }}
+                      {{ if eq $k 0}}
+                          <li {{ if and (eq ($.Scratch.Get "currentTag") "") (eq ($.Scratch.Get "currentYear") (substr .Key 0 4))}} class="nav-item active" {{ end }} ><a href="{{ .Key | printf "/changelog/%s/" | relLangURL}}">{{substr .Key 0 4}}</a>
+                      {{ end }}
+
+                          {{ if eq ($.Scratch.Get "currentMonth") "" }}
+                              {{ $.Scratch.Set "currentMonth" .Key }}
+                          {{ end }}
+
+                          {{ if and (eq ($.Scratch.Get "currentYear") (substr .Key 0 4)) (eq $k 0) }}
+                              <ul class="nav nav-stacked">
+                          {{ end }}
+                          {{ if eq ($.Scratch.Get "currentYear") (substr .Key 0 4) }}
+                                <li {{ if eq .Key ($.Scratch.Get "currentMonth") }} class="nav-item active" {{ end }} >
+                                  <a href="{{ .Key | printf "changelog/%s/"  | relLangURL }}" class="nav-link sub-link">
+                                    {{ index $monthNames (substr .Key 5 ) }}
+                                  </a>
+                                </li>
+                          {{ end }}
+
+                          {{ if and (eq ($.Scratch.Get "currentYear") (substr .Key 0 4)) ( eq (add $k 1) $pagesByYearAndMonthCount)}}
+                              </ul>
+                          {{ end }}
+                          {{ if eq (add $k 1) $pagesByYearAndMonthCount}}
+                          </li>
+                          {{ end }}
+
+                  {{ end }}
+          {{ end }}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="page-wrap content-guide content section-description">
+
+
+        {{ if (ne ($.Scratch.Get "currentTag") "") }}
+            {{ $pagesByMonth := (.Data.Pages).GroupByDate "2006-01"}}
+            {{ .Scratch.Set "p" $pagesByMonth}}
+        {{ else }}
+            {{ $pagesByMonth := (where (where $.Site.Pages "Section" "changelog") "Kind" "page").GroupByDate "2006-01"}}
+            {{ .Scratch.Set "p" $pagesByMonth}}
+        {{ end }}
+
+
+
+        <article>
+            <div class="itv-title">
+                <h1 id="changelog">{{ T "changelog" }}</h1>
+            </div>
+            <div class="article-content">
+            {{$.Scratch.Set "pageYear" ""}}
+        {{ range (.Scratch.Get "p") }}
+            {{ if or (eq .Key ($.Scratch.Get "currentMonth")) (ne ($.Scratch.Get "currentTag") "") }}
+            {{$.Scratch.Set "pageYearMonth" .Key}}
+            {{$.Scratch.Set "pageMonth" (substr .Key 5 2)}}
+            {{$.Scratch.Set "pageMonthPrinted" ""}}
+
+                {{ if ne ($.Scratch.Get "pageYear") (substr .Key 0 4)}}
+                    {{$.Scratch.Set "pageYear" (substr .Key 0 4)}}
+                    <h2 id="{{$.Scratch.Get "pageYear"}}">{{$.Scratch.Get "pageYear"}}</h2>
+                {{end}}
+                {{ range .Pages.GroupByDate "2006-01-02" }}
+                    {{ $.Scratch.Set "Date" .Key }}
+                    {{ range .Pages }}
+                <div class="top-title-b-gss main-title-b-gss" data-cp-date="{{$.Scratch.Get "pageYear"}} {{- partial "helpers/dateDayMonth" $.Scratch -}}">
+                    <div class="l-title-line-b-gss">
+                        {{ if ne ($.Scratch.Get "pageMonthPrinted") ($.Scratch.Get "pageMonth")}}
+                            {{$.Scratch.Set "pageMonthPrinted" ($.Scratch.Get "pageMonth")}}
+                            <div class="tblock-b-gss" id="{{$.Scratch.Get "pageYearMonth"}}">{{ index $monthNames ($.Scratch.Get "pageMonth" ) }}</div>
+                            <div class="line-b-gss"></div>
+                        {{end}}
+                    </div>
+                    <div class="ogr-wg-box">
+                        <h2 class="g-title-wg" id="{{$.Scratch.Get "Date"}}">{{- partial "helpers/dateDayMonth" $.Scratch -}}</h2>
+                    </div>
+                </div>
+
+                <div class="cg-content-box">
+                    <h3 class="cg-subtitle" id="{{ $.Scratch.Get "Date" }}_{{ .Title }}"><span>{{ .Title | T }}</span></h3>
+                    <div class="cg-tag-bl">
+                                {{ $tags := index .Params "changelog/tags" }}
+                        {{ if $tags }}
+                            {{ range $tags }}
+                                <div class="cg-tag-bl-ittem">
+                                    <span>
+                                        <a href="{{ "changelog/tags/" | relLangURL }}{{ . | urlize}}" >{{ . }}</a>
+                                    </span>
+                                </div>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                    <div class="cg-text-bl">
+                        <div class="cg-text-ittem">
+                            <p>{{ .Content | markdownify  }}</p>
+                        </div>
+                    </div>
+                </div>
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+        {{ partial "features/feedback.html" . }}
+        {{ partial "features/feedback-rating.html" }}
+        <div class="hrLine"></div>
+        {{ partial "features/contextReportInfo.html" }}
+            </div>
+        </article>
+    </div>
+</main>

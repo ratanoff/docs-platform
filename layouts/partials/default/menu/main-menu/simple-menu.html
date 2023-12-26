@@ -1,0 +1,17 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+
+{{$currentPageTitle := .Title}}
+{{if gt (len $contentRootPage.Pages) 0}}
+    <ul class="list list__simpleMenu">
+        {{range $contentRootPage.Pages}}
+            {{ if not .Params.exclude_from_main_menu }}
+                <li class="list__item {{with (eq $currentPageTitle .Title) }} _active {{ end }}">
+                    {{$link := (path.Dir .File.Dir) | relLangURL }}
+                    <a href="{{$link}}/{{.File.TranslationBaseName}}">{{ T .Title | safeHTML }}</a>
+                </li>
+            {{end}}
+        {{end}}
+    </ul>
+{{end}}

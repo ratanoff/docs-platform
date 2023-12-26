@@ -1,0 +1,36 @@
+{{ $headers := findRE "<h2.*?>(.|\n)*?</h2>" .Content  }}
+
+<main class="main newGuideWrapper {{if and (ne .Params.disable_right_content_menu true) (gt (len $headers) 0)}}newGuideWrapper_withContentMenu{{end}}">
+
+    {{ partial "default/menu/mobile-menu.html" . }}
+    {{ partial "default/menu/side-menu.html" . }}
+
+    <article>
+        <div class="newGuide">
+            {{ partial "default/page/title.html" . }}
+            {{ partial "default/page/description.html" . }}
+
+            {{.Content | markdownify}}
+
+            {{ if eq .Parent.Params.success_indicator true }}
+                {{ partial "features/success-indicator.html" .Parent }}
+            {{ else if ne .Params.need_feedback false }}
+                {{ partial "features/feedback.html" }}
+                {{ partial "features/feedback-rating.html" }}
+            {{ end }}
+
+            {{ if ne .Params.continue_read nil}}
+                {{ partial "default/page/continue-read.html" . }}
+            {{ end }}
+
+            {{ partial "features/lastMod.html" . }}
+            {{ partial "features/contextReportInfo.html" }}
+
+        </div>
+    </article>
+
+    {{ if ne .Params.disable_right_content_menu true }}
+        {{ partial "default/menu/right-content-menu.html" . }}
+    {{ end }}
+
+</main>

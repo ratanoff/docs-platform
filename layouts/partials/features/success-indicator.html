@@ -1,0 +1,98 @@
+<div class="hrLine"></div>
+<div class="successIndicator" data-success-title="{{.Parent.Title}}_{{.Title}}">
+  <div class="successIndicator__title heading heading__noAnchor heading_h4">{{ T "success_indicator_title" }}</div>
+  <div class="successIndicator__progressWrapper">
+    <div class="successIndicator__progress">
+      {{ range .Pages }}
+      <span
+        class="successIndicator__bar"
+        data-success-value="{{ .File.BaseFileName }}"
+      ></span>
+      {{ end }}
+    </div>
+    <div class="successIndicator__icon">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0)" fill="currentColor">
+          <path
+            d="M12 0l2.5 1.3 2.8.42 1.25 2.52 2 1.98L20.1 9l.46 2.78-2 1.98-1.27 2.52-2.79.42L12 18l-2.5-1.3-2.79-.42-1.26-2.52-2-1.98L3.9 9l-.46-2.78 2-1.98 1.27-2.52L9.5 1.3 12 0z"
+          />
+          <path
+            d="M6 17.7V24l6-1.5 6 1.5v-6.3l-3.03.45L12 19.69l-2.97-1.54L6 17.69z"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0"><path fill="#fff" d="M0 0h24v24H0z" /></clipPath>
+        </defs>
+      </svg>
+    </div>
+  </div>
+  <div class="successIndicator__buttons">
+    <button class="successIndicator__successButton">
+      <span id="succesIndicator__allText">
+        <span id="succesIndicator__allTextWorked"
+          >{{ T "success_indicator_worked" }}</span
+        >
+        <span id="succesIndicator__allTextGoNext"
+          >{{ T "success_indicator_go_next" }}</span
+        >
+      </span>
+      <span id="succesIndicator__lastText" class="g_hidden"
+        >{{ T "success_indicator_last_step" }}</span
+      >
+    </button>
+    <button class="successIndicator__failButton">
+      {{ T "success_indicator_problem" }}
+    </button>
+  </div>
+  <div class="successIndicator__help g_hidden">
+    <div class="successIndicator__cards">
+      {{ with .Params.troubleshooting }}
+        <a href="{{ (strings.TrimPrefix .) | relLangURL }} " class="successIndicator__card">
+          <div class="successIndicator__troubleshooting"></div>
+          <div class="successIndicator__card-title heading__noAnchor heading_h4 link_withArrow">
+            {{ T "success_indicator_find_answer"}}
+          </div>
+          <div class="successIndicator__card-text">{{ T "success_indicator_explore" }}</div>
+        </a>
+      {{ end }}
+      <button type="button" class="successIndicator__card">
+        <div class="openChat"></div>
+        <div class="successIndicator__support"></div>
+        <div class="successIndicator__card-title heading__noAnchor heading_h4 link_withArrow">
+          {{ T "success_indicator_integration_problem" }}
+        </div>
+        <div class="successIndicator__card-text">{{ T "success_indicator_support" }}</div>
+      </button>
+    </div>
+  <form class="successIndicator__feedbackForm">
+    <div class="successIndicator__feedbackInputs">
+      <div class="successIndicator__feedback-title heading__noAnchor heading_h4">{{ T "success_indicator_report" }}</div>
+      <textarea
+        name="comment"
+        required
+        placeholder='{{ T "success_indicator_report_placeholder" }}'
+      ></textarea>
+      <div class="successIndicator__feedback-email">
+        <input
+          type="email"
+          name="email"
+          placeholder='{{ T "context_report_form_email_placeholder" }}'
+        />
+        <button type="submit" class="button button_primary">
+          {{ T "feedback_form_send" }}
+        </button>
+      </div>
+      <div class="successIndicator__feedback-comment">{{ T "success_indicator_report_email" }}</div>
+    </div>
+    <div class="successIndicator__feedbackThanks g_hidden">
+      {{ T "feedback_form_after_send_title" }}
+    </div>
+  </form>
+</div>
+</div>

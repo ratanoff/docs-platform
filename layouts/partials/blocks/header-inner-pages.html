@@ -1,0 +1,71 @@
+<header class="header" id="header">
+  <a href="{{ "" | relLangURL }}" class="header__logo logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 100 100" class="logo__image">
+      <g fill="none" fill-rule="evenodd">
+        <path fill="#0076FF" d="M0 0h100v100H0z"></path>
+        <path fill="#FFF" d="M75.24 63.393c-4.067 0-7.383-3.29-7.383-7.364 0-4.076 3.316-7.368 7.383-7.368 4.036 0 7.35 3.292 7.35 7.368 0 4.074-3.314 7.364-7.35 7.364m-.002-10.714c1.838 0 3.333 1.523 3.333 3.362a3.338 3.338 0 0 1-3.333 3.334c-1.87 0-3.363-1.497-3.363-3.334a3.366 3.366 0 0 1 3.363-3.362zM45.089 82.143V68.75h4.018v13.393H45.09zm5.357 0V68.75h4.018v13.393h-4.018zm15.666-57.95l4.424 4.733-5.894 6.342-2.46-2.675 3.396-3.656-4.417-4.739.005-.006-.005-.009 2.486-2.648.005.01 3.401-3.688 2.485 2.646-3.426 3.69zM25.013 48.66l8.023 13.393H16.964l8.05-13.393zm.23 7.589l-2.029 2.679h4.018l-1.99-2.679zM42.41 21.915l-4.658 4.632 4.658 4.662-2.698 2.72-4.67-4.663-4.668 4.663-2.696-2.72 4.671-4.662-4.671-4.632 2.696-2.719 4.668 4.66 4.67-4.66 2.698 2.72z"></path>
+      </g>
+    </svg>
+    <img src="{{ getenv "HUGO_CDN" }}/images/general/Developer.svg" class="logo__text" alt="Developer">
+  </a>
+  <div class="header__controls">
+    <div class="search">
+       <div class="search__preview _toggle-search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="search__icon"><g fill="none" stroke="#fff" stroke-width="12" stroke-linecap="square" stroke-miterlimit="10"><path d="M92.173 92.173l21.588 21.588"/><circle cx="59.892" cy="59.892" r="45.652"/></g></svg>
+            <div class="search__text">{{ T "header_search" | safeHTML }}</div>
+       </div>
+        <div class="search__wrapper">
+            <div class="search__icon search__icon_search">
+              <svg width="16" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" fill="#011627" clip-rule="evenodd" d="M6 12C2.68629 12 0 9.31371 0 6C0 2.68629 2.68629 0 6 0C9.31371 0 12 2.68629 12 6C12 7.29583 11.5892 8.49572 10.8907 9.47653L14.9667 13.5525C15.3572 13.943 15.3572 14.5762 14.9667 14.9667C14.5762 15.3572 13.943 15.3572 13.5525 14.9667L9.47653 10.8907C8.49572 11.5892 7.29583 12 6 12ZM6 10.6C8.54051 10.6 10.6 8.54051 10.6 6C10.6 3.45949 8.54051 1.4 6 1.4C3.45949 1.4 1.4 3.45949 1.4 6C1.4 8.54051 3.45949 10.6 6 10.6Z" fill="#00244D"/></svg>
+            </div>
+            <input class="search__input" id="docsearch" placeholder="{{ T "header_search" | safeHTML}}">
+            <button class="search__icon search__icon_close _toggle-search">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 357 357" style="enable-background:new 0 0 357 357;" xml:space="preserve"><g><g><polygon points="357,35.7 321.3,0 178.5,142.8 35.7,0 0,35.7 142.8,178.5 0,321.3 35.7,357 178.5,214.2 321.3,357 357,321.3     214.2,178.5   " fill="#011627"/></g></g></svg>
+            </button>
+        </div>
+      </div>
+      <div class="dropdownMenu" id="dropdownMobileMenu">
+          <ul class="dropdownMenu__links">
+            <li>
+              <a class="link link_lightGrey" href="{{ "#solutions" | relLangURL }}">{{ T "index_menu_solutions" | safeHTML}}</a>
+            </li>
+            <li>
+              <a class="link link_lightGrey" href="{{ "#doc" | relLangURL }}">{{ T "index_menu_product_guides" | safeHTML}}</a>
+            </li>
+            <li>
+              <a class="link link_lightGrey" href="{{ "#api" | relLangURL }}">{{ T "index_menu_api_references" | safeHTML}}</a>
+            </li>
+            <li>
+              <a class="link link_lightGrey" href="{{ "#sdk" | relLangURL }}">{{ T "index_menu_sdks_libraries" | safeHTML}}</a>
+            </li>
+            <li>
+              <a class="link link_lightGrey" href="{{ "#help" | relLangURL }}">{{ T "index_menu_help_support" | safeHTML}}</a>
+            </li>
+          </ul>
+          <div class="dropdownMenu__buttons">
+              <a class="button button_primary dropdownMenu__control" target="_blank" href='https://publisher.xsolla.com?locale={{ $.Site.Language.Lang }}' id="signUpButton"><span>{{ T "header_sign_in" | safeHTML}}</span></a>
+              <div class="dropdown dropdownMenu__control">
+                  <button class="button button_secondaryWhite button_withTriangle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ $.Site.Language.Lang | upper }}
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right langSwitcher" aria-labelledby="dropdownMenuButton">
+                      {{- $currSitePrefix := "" | relLangURL | strings.TrimSuffix "/" }}
+                      {{- $noLangPath := $.RelPermalink | strings.TrimPrefix $currSitePrefix }}
+                      {{- $langPath := $noLangPath}}
+                      {{- range $.Site.Data.langs.langs -}}
+                      {{ if ne .iso "en" -}}
+                      {{ $langPath =  (printf "/%s%s" .iso $noLangPath) }}
+                      {{- end -}}
+                      <a class="langSwitcher__link{{ if eq $.Lang .iso }} _is-active {{ end }}"  href="{{ $langPath }}" lang="{{ .iso }}">{{ .lang }}</a>
+                      {{- end}}
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div class="hamburgerMenu">
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_1"></div>
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_2"></div>
+      <div class="hamburgerMenu__bar hamburgerMenu__bar_3"></div>
+    </div>
+  </div>
+</header>

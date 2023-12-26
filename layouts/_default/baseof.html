@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="{{ $.Lang }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{{ getenv "HUGO_CDN" }}/static/css/bundle.css">
+    <!-- Useful meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Follow our developer documentation to integrate Xsolla products step-by-step or customize your solution with our APIs.">
+    <meta name="keywords" content="">
+    {{ if .IsHome }}
+      <meta name="google-site-verification" content="0bR2pCu89S3zrHeFakIW9zuMjZXiaRy99TjB145c86c" />
+    {{ end }}
+    {{ if .Params.robots_no_index }}
+      <meta name="robots" content="no index, no follow">
+      <meta name="googlebot" content="no index, no follow">
+    {{ else if or (eq $.Lang "es") (eq $.Lang "pt") (eq $.Lang "fr") }}
+      <meta name="robots" content="no index, no follow">
+      <meta name="googlebot" content="no index, no follow">
+    {{ else }}
+      <meta name="robots" content="index, follow, noodp">
+      <meta name="googlebot" content="index, follow">
+    {{ end }}
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta property="og:image" content="{{ getenv "HUGO_CDN" }}/images/baseof/xsolla-developers-og.png" />
+    <meta property="og:image:secure_url" content="{{ getenv "HUGO_CDN" }}/images/baseof/xsolla-developers-og.png" />
+    {{ $is404Page :=  strings.HasSuffix .RelPermalink (cond (ne .Lang "en" ) (print "/" .Lang "/404.html") "/404.html" ) }}
+    {{ $isChangelog :=  hasPrefix .RelPermalink (cond (ne .Lang "en" ) (print "/" .Lang "/changelog") "/changelog" ) }}
+    {{ $isRecipePage :=  hasPrefix .RelPermalink (cond (ne .Lang "en" ) (print "/" .Lang "/is-recipe") "/is-recipe" ) }}
+    {{ $isReuse :=  hasPrefix .RelPermalink (cond (ne .Lang "en" ) (print "/" .Lang "/reuse") "/reuse" ) }}
+    {{if or $is404Page $isChangelog $isRecipePage $isReuse }}
+      <title>Xsolla Documentation - {{ .Title | humanize }}</title>
+    {{else}}
+      <title>Xsolla Documentation - {{ T .Title | plainify }}</title>
+    {{end}}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | relURL }}{{ else }}{{ getenv "HUGO_CDN" }}/images/baseof/favicon.png{{ end }}">
+    <link rel="icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | relURL }}{{ else }}{{ getenv "HUGO_CDN" }}/images/baseof/favicon.png{{ end }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    {{ if (not .Site.IsServer) }}
+      {{- partial "js/new_relic.html" . -}}
+    {{ end }}
+    {{ $currSitePrefix := "" | relLangURL | strings.TrimSuffix "/" }}
+    {{- $noLangPath := $.RelPermalink | strings.TrimPrefix $currSitePrefix }}
+    {{- $langPath := $noLangPath}}
+    {{- $lang := "x-default" }}
+    {{- range $.Site.Data.langs.langs -}}
+      {{ if ne .iso "en" -}}
+        {{- $lang = .iso }}
+        {{- $langPath =  (printf "/%s%s" .iso $noLangPath) }}
+      {{- end }}
+      <link rel="alternate" hreflang="{{$lang}}" href="https://developers.xsolla.com{{ $langPath }}" />
+    {{- end}}
+
+  </head>
+  <body data-spy="scroll" data-target="#guide-menu" data-offset="1" class="{{.Site.Language.Lang }}" lang="{{ with $.Site.LanguageCode }}{{ . }}{{ else }}en-us{{ end }}">
+  {{- partial "features/ie-browser.html" . -}}
+  	<div class="container cc-full">
+      <div class="banner-locale banner-locale--hidden">
+        <div class="banner-locale__container">
+          <div class="banner-locale__text"></div>
+          <button class="banner-locale__close-button">&#10005;</button>
+        </div>
+      </div>
+      {{ block "header" . }}{{ end }}
+      {{ block "main" . }}{{ end }}
+      {{ block "footer" . }}{{ end }}
+      {{ partial "features/contextReportForm.html" }}
+      <div class="gdpr" id="gdpr-consent-form">
+      </div>
+    </div>
+    {{- partial "js/ieBrowser.html" . -}}
+    {{- partial "js/visit.html" . -}}
+    <script src="{{ getenv "HUGO_CDN" }}/static/js/vendor.js"></script>
+    <script src="{{ getenv "HUGO_CDN" }}/static/js/oldBundle.js"></script>
+    <script src="{{ getenv "HUGO_CDN" }}/static/js/bundle.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    {{- partial "js/status.html" . -}}
+    {{- partial "js/docsearch.html" . -}}
+  </body>
+</html>

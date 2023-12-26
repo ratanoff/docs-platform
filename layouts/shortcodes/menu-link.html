@@ -1,0 +1,17 @@
+{{ $CurrentLocale := "/" }}
+{{if (ne .Site.Language.Lang "en")}}
+{{ $CurrentLocale = (print "/" .Site.Language.Lang "/")}}
+{{end}}
+{{ if (hasPrefix (.Get 1) "sdk-code-references") }}
+{{if eq (.Get 2) "blank"}}
+<a class="nav-link" href="https://developers.xsolla.com/{{ .Get 1 }}" target="_blank">{{ T (.Get 0) | safeHTML }}</a>
+{{else}}
+<a class="nav-link" href="https://developers.xsolla.com/{{ .Get 1 }}">{{ T (.Get 0) | safeHTML }}</a>
+{{end}}
+{{ else }}
+{{if eq (.Get 2) "blank"}}
+<a class="nav-link" href="{{$CurrentLocale}}{{ .Get 1 }}" target="_blank">{{ T (.Get 0) | safeHTML }}</a>
+{{else}}
+<a class="nav-link" href="{{$CurrentLocale}}{{ .Get 1 }}">{{ T (.Get 0) | safeHTML }}</a>
+{{end}}
+{{end}}

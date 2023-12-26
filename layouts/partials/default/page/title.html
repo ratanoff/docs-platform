@@ -1,0 +1,19 @@
+{{$contentRootDir := (index (split .File.Dir "/") 1)}}
+{{$contentRootPath := (print "/" .Section "/" $contentRootDir)}}
+{{$contentRootPage := .GetPage $contentRootPath}}
+{{$contentRootPageTitle := $contentRootPage.Title}}
+
+{{if eq .Title $contentRootPageTitle}}
+    <h1 id="{{ .Title | urlize }}"
+        class="newGuide__title heading_navy {{ if ne (.Params.withoutMargin) nil }} g_mb20 {{ end }}">
+        {{ T .Params.title | markdownify }}
+    </h1>
+{{else}}
+    <h1 id="{{ .Title }}" class="g_mb40">{{ T .Title | markdownify }}</h1>
+{{end}}
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+<!--карточка интеграции-->
+<div class="getStartedCard">
+    <img class="getStartedCard__icon getStartedCard__child" src="{{ getenv "HUGO_CDN" }}/images/{{ (.Get "icon" ) }}">
+    <h3 class="getStartedCard__header notoSansExtra heading_navy g_mt0 g_mb15" id="{{ (.Get "title") | urlize }}">{{ T (.Get "title") | safeHTML }}</h3>
+    <p>{{ .Inner | markdownify }}</p>
+    <a href="{{ (strings.TrimPrefix "/" (.Get "getStartedLink")) | relLangURL }}" class="button button_primary">{{ T "general_get_started" }}</a>
+    {{ if ne (.Get "playDemoLink") "" }}<a href="{{ (.Get "playDemoLink") | relLangURL }}" class="button button_secondaryBlue" target="_blank">{{ T "general_play_demo" }}</a>{{ end }}
+</div>

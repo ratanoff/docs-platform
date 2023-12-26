@@ -1,0 +1,25 @@
+<div class="metrix alert alert__type_{{ (.Get "class") }}">
+    <div class="alert__header">
+        {{ (.Get "header") | T }}
+    </div>
+    <div class="bodyText">
+        {{ .Inner | markdownify }}
+        <ul>
+            {{- if eq (.Get "unity") "true" -}}
+                <li><a onclick="XA.elementClick('doc_sdkAlert_unity_click')" href="{{ "sdk/unity/" | relLangURL }}" target="_blank">{{ "sdk_note_list_unity" | T }}</a></li>
+            {{- end -}}
+            {{- if eq (.Get "unreal") "true" -}}
+                <li><a onclick="XA.elementClick('doc_sdkAlert_unrealEngine_click')" href="{{ "sdk/unreal-engine/" | relLangURL }}" target="_blank">{{ "sdk_note_list_unreal_engine" | T }}</a></li>
+            {{- end -}}
+            {{- if eq (.Get "cocos") "true" -}}
+                <li><a onclick="XA.elementClick('doc_sdkAlert_cocos_click')" href="{{ "sdk/cocos/" | relLangURL }}" target="_blank">{{ "sdk_note_list_cocos_creator" | T }}</a></li>
+            {{- end -}}
+            {{- if eq (.Get "android") "true" -}}
+                <li><a onclick="XA.elementClick('doc_sdkAlert_android_click')" href="{{ "sdk/android/" | relLangURL }}" target="_blank">{{ "sdk_note_list_android" | T }}</a></li>
+            {{- end -}}
+            {{- if eq (.Get "ios") "true" -}}
+                <li><a onclick="XA.elementClick('doc_sdkAlert_ios_click')" href="{{ "sdk/ios/" | relLangURL }}" target="_blank">{{ "sdk_note_list_ios" | T }}</a></li>
+            {{- end -}}
+        </ul>
+    </div>
+</div>

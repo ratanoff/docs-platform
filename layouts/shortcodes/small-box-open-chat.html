@@ -1,0 +1,6 @@
+<div class="smallBlueCard" style="cursor: pointer">
+    <div class="openChat"></div>
+    <div class="smallBlueCard__icon"><img src="{{ getenv "HUGO_CDN" }}/images/{{ (.Get 0) }}"></div>
+    <div class="smallBlueCard__blueTitle">{{ T (.Get 1) | safeHTML }}</div>
+    <div class="bodyText">{{ T (.Get 2) | safeHTML }}</div>
+</div>

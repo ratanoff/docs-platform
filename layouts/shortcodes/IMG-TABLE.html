@@ -1,0 +1,7 @@
+{{- $img := .Get "img" -}}
+{{- $alt := .Get "alt" -}}
+{{- $width := .Get "width" -}}
+
+{{- $absoluteURL := printf "%s/images/%s" (getenv "HUGO_CDN") $img -}}
+
+<img src="{{ $absoluteURL }}" alt="{{ $alt }}" width="{{ $width }}">

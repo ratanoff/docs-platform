@@ -1,0 +1,22 @@
+<script>
+    $(function () {
+
+     $.ajax({
+         url: "https://status.xsolla.com/index.json",
+         success: function(response){
+
+           var components = response.components;
+           var status = true;
+           components.forEach(function (item) {
+             status *=(item.status === "operational");
+           });
+
+           var statusClass = status ? "_success" : "_error";
+           $(".systemStatus__indicator").removeClass("systemStatus__indicator_success systemStatus__indicator_error");
+           $(".systemStatus__indicator").addClass("systemStatus__indicator" + statusClass);
+           $(`.systemStatus__message${statusClass}`).toggleClass("systemStatus__message_hidden");
+         }
+       })
+
+    });
+</script>

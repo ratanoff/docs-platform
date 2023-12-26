@@ -1,0 +1,16 @@
+{{partial "default/menu/main-menu/back-button.html" . }}
+{{partial "default/menu/main-menu/menu-title.html" . }}
+{{if eq .Section "sdk"}}
+    {{partial "default/menu/main-menu/sdk-version-selector.html" . }}
+{{end}}
+{{partial "default/menu/main-menu/header-menu.html" . }}
+
+<ul class="list">
+    {{ if ne .Params.simple_menu true }}
+        {{partial "default/menu/main-menu/accordion-menu.html" . }}
+    {{else}}
+        {{partial "default/menu/main-menu/simple-menu.html" . }}
+    {{end}}
+
+    {{partial "default/menu/main-menu/footer-menu.html" . }}
+</ul>

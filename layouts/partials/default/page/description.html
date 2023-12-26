@@ -1,0 +1,13 @@
+{{ if ne .Params.description nil }}
+    {{if ne .Params.picture_path nil}}
+        <div class="newGuide__child newGuide__child_withPicture">
+            <p class="bodyText_large newGuide__description">{{ T .Params.description | markdownify}}</p>
+            {{$img := .Params.picture_path }}
+            <div><img class="flexBlock__item_image" src="{{ getenv "HUGO_CDN" }}/images{{ $img }}"></div>
+        </div>
+    {{else}}
+        <div class="newGuide__child">
+            <p class="bodyText_large newGuide__description">{{ T .Params.description | markdownify}}</p>
+        </div>
+    {{end}}
+{{ end }}

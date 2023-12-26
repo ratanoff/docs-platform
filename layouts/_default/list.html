@@ -1,0 +1,17 @@
+{{ define "header" }}
+    {{ partial "blocks/header-inner-pages.html" . }}
+{{ end }}
+{{ define "main" }}
+    {{if eq .Params.stand_alone_page true}}
+        {{ partial "default/standalone-page.html" . }}
+    {{else if ne .Content ""}}
+        {{ partial "default/page.html" . }}
+    {{else}}
+        {{range first 1 .Pages}}
+            {{ partial "default/page.html" . }}
+        {{end}}
+    {{end}}
+{{ end }}
+{{ define "footer" }}
+    {{ partial "blocks/footer-guide.html" . }}
+{{ end }}

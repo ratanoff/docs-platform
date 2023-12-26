@@ -1,0 +1,14 @@
+<script>
+    var isIE = /* @cc_on!@ */!!document.documentMode;
+    if (isIE) {
+        document.execCommand("Stop");
+        var container = document.querySelector('.container.cc-full');
+        if(container){
+            container.parentElement.removeChild(container);
+            var ieBlock = document.querySelector('.ie-fixed-block.hidden');
+            if(ieBlock){
+                ieBlock.classList.remove('hidden');
+            }
+        }
+    }
+</script>

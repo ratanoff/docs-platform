@@ -1,0 +1,32 @@
+{{ $content := (.Get 0 | T ) -}}
+{{ $isMdLink := false }}
+{{ range $index, $element :=.Params -}}
+    {{- if gt $index 0 -}}
+        {{- if eq $element "login_widget_version_link" -}}
+            {{$widget_version := (replace (getenv "LOGIN_WIDGET_VERSION") "v" "")}}
+            {{$widget_link := ( printf "https://cdn.xsolla.net/xsolla-login-widget/sdk/%s/xl.min.js" $widget_version )}}
+            {{$content = (replace $content "login_widget_version_link" $widget_link )}}
+        {{- else -}}
+            {{ $isMdLink = true }}
+            {{- $linkElement := $element -}}
+            {{- if (hasPrefix $element "/files/") -}}
+                {{- $linkElement =  (printf "%s%s" (getenv "HUGO_CDN") $element) -}}
+            {{- else if (in $.Site.Data.redoclyWebhookUrls.urls  (print "/" (index (split $element "/") 1) ) ) -}}
+                {{- $linkElement = print "https://developers.xsolla.com" ( strings.TrimPrefix "/" $element | relLangURL ) -}}
+            {{- else if (in $.Site.Data.redoclyApiUrls.urls  (print "/" (index (split $element "/") 1) "/" (index (split $element "/") 2) ) ) -}}
+                {{- $linkElement = print "https://developers.xsolla.com" ( strings.TrimPrefix "/" $element | relLangURL ) -}}
+            {{- else if (hasPrefix $element "/") -}}
+                {{- $linkElement = ((strings.TrimPrefix "/" $element) | relLangURL) -}}
+            {{- end -}}
+            {{ $content = (replace $content ( printf "](%d)" $index ) ( printf "](%s)" ($linkElement) )) }}
+        {{- end -}}
+    {{- end -}}
+{{ end }}
+
+{{ if $isMdLink }}
+    {{ range .Params }}
+        {{ $content = replaceRE (print `\[(.*?)\]\((.*?)\)`) (print "<a href=\"$2\">$1</a>") $content }}
+    {{ end }}
+{{ end }}
+
+{{ $content | markdownify }}

@@ -1,0 +1,21 @@
+{{ $linkElement := (.Get 2) }}
+{{ if (hasPrefix (.Get 2) "/files/") }}
+    {{ $linkElement =  (printf "%s%s" (getenv "HUGO_CDN") (.Get 2)) }}
+{{ else if (in $.Site.Data.redoclyWebhookUrls.urls  (print "/" (index (split (.Get 2) "/") 1) ) ) }}
+    {{ $linkElement = print "https://developers.xsolla.com" ( strings.TrimPrefix "/" (.Get 2) | relLangURL ) }}
+{{ else if (in $.Site.Data.redoclyApiUrls.urls  (print "/" (index (split (.Get 2) "/") 1) "/" (index (split (.Get 2) "/") 2) ) ) }}
+    {{ $linkElement = print "https://developers.xsolla.com" ( strings.TrimPrefix "/" (.Get 2) | relLangURL ) }}
+{{ else if (hasPrefix (.Get 2) "/") }}
+    {{ $linkElement = ((strings.TrimPrefix "/" (.Get 2)) | relLangURL) }}
+{{ end }}
+<div class="smallBlueCard">
+    <div class="smallBlueCard__icon">
+        <img src="{{ getenv "HUGO_CDN" }}/images/{{ (.Get 0) }}">
+    </div>
+    {{- if ne ( .Get 4) "external" -}}
+        <a class="link link_bold" href="{{ $linkElement }}">{{ T (.Get 1) }}</a>
+    {{- else -}}
+        <a class="link link_bold" href="{{ $linkElement }}" target="_blank">{{ T (.Get 1) }}</a>
+    {{- end -}}
+    <div class="bodyText">{{ T (.Get 3) | safeHTML }}</div>
+</div> 

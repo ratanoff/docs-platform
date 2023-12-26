@@ -1,0 +1,3 @@
+{{ $alertType := .Get 0 }}
+{{ $alertHeaderI18nKey := print "alert_header_" $alertType }}
+<div class="alert alert__type_{{ $alertType }}"><div class="alert__header">{{ $alertHeaderI18nKey | T }}</div><div class="bodyText">{{ .Inner | markdownify }}</div></div>

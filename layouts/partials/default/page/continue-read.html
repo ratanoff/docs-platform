@@ -1,0 +1,27 @@
+<div class="hrLine"></div>
+<h3 id="general_continue_reading" class="heading_h2">
+    {{ cond (eq .Params.continue_read_text nil) (T "general_continue_reading") (T .Params.continue_read_text) }}
+</h3>
+
+<div class="flexBlock">
+    {{range .Params.continue_read}}
+        <div class="flexBlock__item">
+            {{if ne .title nil}}
+                <h4 id="{{ .title }}" class="heading__label heading_navy g_mb10">{{ T .title | safeHTML }}</h4>
+            {{end}}
+            {{range .arrow_link }}
+                {{if (in $.Site.Data.redoclyWebhookUrls.urls  (print "/" (index (split .link "/") 1) ) ) }}
+                    <a href="{{ print "https://developers.xsolla.com" ( strings.TrimPrefix "/" .link | relLangURL ) }}"
+                       class="link_bold link link_withArrow g_mb10 g_block">{{T .text | markdownify }}</a>
+                {{else if (in $.Site.Data.redoclyApiUrls.urls  (print "/" (index (split .link "/") 1) "/" (index (split .link "/") 2) ) ) }}
+                    <a href="{{ print "https://developers.xsolla.com" ( strings.TrimPrefix "/" .link | relLangURL ) }}"
+                       class="link_bold link link_withArrow g_mb10 g_block">{{T .text | markdownify }}</a>
+                {{else if (hasPrefix .link "/") }}
+                    <a href="{{ strings.TrimPrefix "/" .link | relLangURL}}" class="link_bold link link_withArrow g_mb10 g_block">{{T .text | markdownify }}</a>
+                {{else}}
+                    <a href="{{ .link }}" class="link_bold link link_withArrow g_mb10 g_block">{{T .text | markdownify }}</a>
+                {{end}}
+            {{end}}
+        </div>
+    {{end}}
+</div>

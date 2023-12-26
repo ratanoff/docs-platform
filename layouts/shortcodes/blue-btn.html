@@ -1,0 +1,7 @@
+{{if ne (.Get 2) "" }}
+{{if eq (.Get 2) "internal"}}
+<a class="button button_primary {{ (.Get 3) }} {{ (.Get 4) }}" href="{{ (strings.TrimPrefix "/" (.Get 0)) | relLangURL }}">{{ T ( .Get 1 ) | safeHTML}}</a>
+{{else}}
+<a class="button button_primary {{ (.Get 3) }} {{ (.Get 4) }}" href="{{ .Get 0 }}" target="_blank">{{ T ( .Get 1 ) | safeHTML}}</a>
+{{end}}
+{{end}}
