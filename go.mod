@@ -1,3 +1,3 @@
-module gitlab.loc/documentation/xsolla-docs-platform
+module github.com/ratanoff/docs-platform
 
 go 1.20
